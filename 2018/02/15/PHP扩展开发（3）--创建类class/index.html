@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="当然了，现代编程语言当然少不了 类(Class) 这种元素，这一篇我们来看一下如何在PHP扩展中创建一个类。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP扩展开发（3）- 创建类class">
+<meta property="og:url" content="//goodspb.net/2018/02/15/PHP扩展开发（3）--创建类class/index.html">
+<meta property="og:site_name" content="GoodSpb , Web Blog">
+<meta property="og:description" content="当然了，现代编程语言当然少不了 类(Class) 这种元素，这一篇我们来看一下如何在PHP扩展中创建一个类。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-02T12:18:51.489Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP扩展开发（3）- 创建类class">
+<meta name="twitter:description" content="当然了，现代编程语言当然少不了 类(Class) 这种元素，这一篇我们来看一下如何在PHP扩展中创建一个类。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="GoodSpb , Web Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="//goodspb.net/2018/02/15/PHP扩展开发（3）--创建类class/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>PHP扩展开发（3）- 创建类class | GoodSpb , Web Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GoodSpb , Web Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">做一个高P格的程序猿</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="//goodspb.net/2018/02/15/PHP扩展开发（3）--创建类class/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="goodspb">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoodSpb , Web Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP扩展开发（3）- 创建类class
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-02-15 20:05:38" itemprop="dateCreated datePublished" datetime="2018-02-15T20:05:38+08:00">2018-02-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-02 20:18:51" itemprop="dateModified" datetime="2019-03-02T20:18:51+08:00">2019-03-02</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP扩展开发/" itemprop="url" rel="index"><span itemprop="name">PHP扩展开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当然了，现代编程语言当然少不了 <strong>类(Class)</strong> 这种元素，这一篇我们来看一下如何在PHP扩展中创建一个类。</p>
+<a id="more"></a>
+<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>要完成一个任务，我们需要订立一个目标。实际上，我们需要在扩展中实现的类就像下面我们在PHP当中实现的类一样，包含构造函数，属性，方法等。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">Class Car()</span><br><span class="line">&#123;</span><br><span class="line">    protect $driver;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setDriver</span><span class="params">($driver)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;driver = $driver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sprintf(<span class="string">"%s is driving the car."</span>, <span class="keyword">$this</span>-&gt;driver);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$car = <span class="keyword">new</span> Car();</span><br><span class="line">$car-&gt;setDriver(<span class="string">"Goodspb"</span>);</span><br><span class="line"><span class="keyword">echo</span> $car-&gt;run();</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出:</span></span><br><span class="line"><span class="comment">Goodspb is driving the car.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>分析一下：</p>
+<ul>
+<li>类名：Car</li>
+<li>属性：driver</li>
+<li>方法：run</li>
+</ul>
+<h3 id="二、声明类"><a href="#二、声明类" class="headerlink" title="二、声明类"></a>二、声明类</h3><p>如何创建一个扩展这里就不说了，具体可以参考《<a href="https://www.goodspb.net/php%e6%89%a9%e5%b1%95%e5%bc%80%e5%8f%91%ef%bc%881%ef%bc%89-%e6%96%b0%e5%bb%ba%e6%89%a9%e5%b1%95/" target="_blank" rel="noopener">PHP扩展开发（1）-初识扩展</a>》是如何创建一个扩展的，这次我们创建一个名叫：hello_class 的扩展，主要包含头文件： hello_class.h 头文件和 hello_class.c 。我们在 hello_class.h 中添加类的声明。 在 hello_class.h 的尾部添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Class Car */</span></span><br><span class="line">zend_class_entry *car_ce;              <span class="comment">//定义全局的类结构</span></span><br><span class="line">PHP_METHOD(Car, __construct);          <span class="comment">//声明构造函数</span></span><br><span class="line">PHP_METHOD(Car, setDriver);            <span class="comment">//声明方法</span></span><br><span class="line">PHP_METHOD(Car, run);                  <span class="comment">//声明方法</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、实现类"><a href="#三、实现类" class="headerlink" title="三、实现类"></a>三、实现类</h3><p>在 hello_class.c 中添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* class Car */</span></span><br><span class="line">ZEND_BEGIN_ARG_INFO(arg_car_setDriver, <span class="number">0</span>)</span><br><span class="line">   ZEND_ARG_INFO(<span class="number">0</span>, driver)</span><br><span class="line">ZEND_END_ARG_INFO()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> zend_function_entry car_methods[] = &#123;</span><br><span class="line">   <span class="comment">/* Class Car */</span></span><br><span class="line">   PHP_ME(Car, __construct, <span class="literal">NULL</span>, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)</span><br><span class="line">   PHP_ME(Car, run, <span class="literal">NULL</span>, ZEND_ACC_PUBLIC)</span><br><span class="line">   PHP_ME(Car, setDriver, arg_car_setDriver, ZEND_ACC_PUBLIC)</span><br><span class="line">   PHP_FE_END    <span class="comment">/* Must be the last line in hello_class_functions[] */</span></span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">PHP_METHOD(Car, __construct)</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">PHP_METHOD(Car, setDriver)</span><br><span class="line">&#123;</span><br><span class="line">    zend_string *driver;</span><br><span class="line"> </span><br><span class="line">    ZEND_PARSE_PARAMETERS_START(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">            Z_PARAM_STR(driver)</span><br><span class="line">    ZEND_PARSE_PARAMETERS_END();</span><br><span class="line"> </span><br><span class="line">    zend_update_property_string(car_ce,  getThis(), <span class="string">"driver"</span>, <span class="keyword">sizeof</span>(<span class="string">"driver"</span>) - <span class="number">1</span>, ZSTR_VAL(driver));</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">PHP_METHOD(Car, run)</span><br><span class="line">&#123;</span><br><span class="line">    zval *driver, rdriver;</span><br><span class="line">    zend_string *driver_string;</span><br><span class="line">    driver = zend_read_property(car_ce, getThis(), <span class="string">"driver"</span>, <span class="keyword">sizeof</span>(<span class="string">"driver"</span>) - <span class="number">1</span>, <span class="number">0</span>, &amp;rdriver);</span><br><span class="line">    driver_string = Z_STR_P(driver);</span><br><span class="line">    RETURN_STR(strpprintf(<span class="number">0</span>, <span class="string">"%s is driving the car."</span>, ZSTR_VAL(driver_string)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就实现类了，我们来分解一下代码：</p>
+<h4 id="1-这段是对函数-setDriver-配置参数"><a href="#1-这段是对函数-setDriver-配置参数" class="headerlink" title="1). 这段是对函数 setDriver 配置参数:"></a>1). 这段是对函数 setDriver 配置参数:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ZEND_BEGIN_ARG_INFO(arg_car_setDriver, <span class="number">0</span>)      <span class="comment">//第一个参数为配置名，用于后面填充；第二参数默认为0，暂无使用</span></span><br><span class="line">   ZEND_ARG_INFO(<span class="number">0</span>, driver)                    <span class="comment">//第一个参数表示是否传递引用，0表示否，1表示是；第二个参数表示参数名</span></span><br><span class="line">ZEND_END_ARG_INFO()</span><br></pre></td></tr></table></figure>
+<h4 id="2-这段是新建一个方法的入口："><a href="#2-这段是新建一个方法的入口：" class="headerlink" title="2). 这段是新建一个方法的入口："></a>2). 这段是新建一个方法的入口：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> zend_function_entry car_methods[] = &#123;</span><br><span class="line">   <span class="comment">/* Class Car */</span></span><br><span class="line">   PHP_ME(Car, __construct, <span class="literal">NULL</span>, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)</span><br><span class="line">   PHP_ME(Car, run, <span class="literal">NULL</span>, ZEND_ACC_PUBLIC)</span><br><span class="line">   PHP_ME(Car, setDriver, arg_car_setDriver, ZEND_ACC_PUBLIC)</span><br><span class="line">   PHP_FE_END    <span class="comment">/* Must be the last line in hello_class_functions[] */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>增加类方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP_ME(Car, __construct, <span class="literal">NULL</span>, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一个参数为：类名</li>
+<li>第二个参数为方法名</li>
+<li>第三个参数为参数结构体，例如上面我们新建的 <code>arg_car_setDriver</code></li>
+<li>第四个参数为属性的掩码，例如上面的 <code>ZEND_ACC_PUBLIC | ZEND_ACC_CTOR</code> 表示该方法为 public 且为  <code>构造函数</code></li>
+</ul>
+<p>关于第四个参数，定义有以下这些，大家看到最后的单词估计也能猜测得到。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* method flags (types) */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_STATIC			0x01</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_ABSTRACT		0x02</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_FINAL			0x04</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_IMPLEMENTED_ABSTRACT		0x08</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* class flags (types) */</span></span><br><span class="line"><span class="comment">/* ZEND_ACC_IMPLICIT_ABSTRACT_CLASS is used for abstract classes (since it is set by any abstract method even interfaces MAY have it set, too). */</span></span><br><span class="line"><span class="comment">/* ZEND_ACC_EXPLICIT_ABSTRACT_CLASS denotes that a class was explicitly defined as abstract by using the keyword. */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_IMPLICIT_ABSTRACT_CLASS	0x10</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_EXPLICIT_ABSTRACT_CLASS	0x20</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_INTERFACE		            0x40</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_TRAIT						0x80</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_ANON_CLASS                 0x100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_ANON_BOUND                 0x200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_INHERITED                  0x400</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* method flags (visibility) */</span></span><br><span class="line"><span class="comment">/* The order of those must be kept - public &lt; protected &lt; private */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_PUBLIC		0x100</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_PROTECTED	0x200</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_PRIVATE	0x400</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_PPP_MASK  (ZEND_ACC_PUBLIC | ZEND_ACC_PROTECTED | ZEND_ACC_PRIVATE)</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_CHANGED	0x800</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_IMPLICIT_PUBLIC	0x1000</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* method flags (special method detection) */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_CTOR		0x2000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_DTOR		0x4000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_CLONE		0x8000</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* method flag used by Closure::__invoke() */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_USER_ARG_INFO 0x80</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* method flag (bc only), any method that has this flag can be used statically and non statically. */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_ALLOW_STATIC	0x10000</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* shadow of parent's private method/property */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_SHADOW 0x20000</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/* deprecation flag */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZEND_ACC_DEPRECATED 0x40000</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-具体实现特定的方法："><a href="#3-具体实现特定的方法：" class="headerlink" title="3). 具体实现特定的方法："></a>3). 具体实现特定的方法：</h4><p>之前在 hello_class.h 中使用 PHP_ME  定义过方法，就好似函数一样，有定义就必须有实现。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">PHP_METHOD(Car, setDriver)</span><br><span class="line">&#123;</span><br><span class="line">    zend_string *driver;</span><br><span class="line"> </span><br><span class="line">    ZEND_PARSE_PARAMETERS_START(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">            Z_PARAM_STR(driver)</span><br><span class="line">    ZEND_PARSE_PARAMETERS_END();</span><br><span class="line"> </span><br><span class="line">    zend_update_property_string(car_ce,  getThis(), <span class="string">"driver"</span>, <span class="keyword">sizeof</span>(<span class="string">"driver"</span>) - <span class="number">1</span>, ZSTR_VAL(driver));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中间 <code>ZEND_PARSE_PARAMETERS_START(1, 1)</code> 到 <code>ZEND_PARSE_PARAMETERS_END();</code> 是获取传入的参数，这里不做解释了，前面的教程有介绍过，重点来看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zend_update_property_string(car_ce,  getThis(), <span class="string">"driver"</span>, <span class="keyword">sizeof</span>(<span class="string">"driver"</span>) - <span class="number">1</span>, ZSTR_VAL(driver));</span><br></pre></td></tr></table></figure>
+<p>这个方法 zend_update_property_string  直接从翻译过来应该也不能，可以解释为：更新属性为一个特定的字符串。</p>
+<ul>
+<li>第一个参数：类的结构体指针，这里是之前定义的： car_ce</li>
+<li>第二个参数：当前实例的指针，其实就类似PHP当中的 $this ，扩展中使用 getThis()</li>
+<li>第三个参数：属性名</li>
+<li>第四个参数：属性名的长度</li>
+<li><p>第五个参数：需要设置的字符串，这里通过 ZSTR_VAL 将 zend_string 中实际的值取出来。</p>
+<p>再来看看另外一个方法 <code>run</code> :</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PHP_METHOD(Car, run)</span><br><span class="line">&#123;</span><br><span class="line">    zval *driver, rdriver;</span><br><span class="line">    zend_string *driver_string;</span><br><span class="line">    driver = zend_read_property(car_ce, getThis(), <span class="string">"driver"</span>, <span class="keyword">sizeof</span>(<span class="string">"driver"</span>) - <span class="number">1</span>, <span class="number">0</span>, &amp;rdriver);</span><br><span class="line">    driver_string = Z_STR_P(driver);</span><br><span class="line">    RETURN_STR(strpprintf(<span class="number">0</span>, <span class="string">"%s is driving the car."</span>, ZSTR_VAL(driver_string)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重点关注里面调用的方法：<code>zend_read_property</code> , 我们通过这个方法获取属性的内容，就像 PHP 当中的 $this-&gt;driver 。 解析一下 <code>zend_read_property</code> 的参数：</p>
+<ul>
+<li>第一个参数：类的结构体指针，这里是之前定义的： car_ce</li>
+<li>第二个参数：当前实例的指针，其实就类似PHP当中的 $this ，扩展中使用 getThis()</li>
+<li>第三个参数：属性名</li>
+<li>第四个参数：属性名的长度</li>
+<li>第五个参数：是否报错，0表示不报，1表示报</li>
+<li>第六个参数：PHP7扩展中新增，貌似也没啥用，可以直接传 NULL</li>
+</ul>
+<p>返回这是一个 zval ，通过 Z_STR_P 转变成 zend_string 供后面 strpprintf 来使用。</p>
+<h3 id="四、注册类"><a href="#四、注册类" class="headerlink" title="四、注册类"></a>四、注册类</h3><p>我们已经声明并且实现了类了，但是这个时候，如果你编译了，其实还是不能找到这个类哦，我们需要向PHP注册这个类。具体可以在 `PHP_MINIT_FUNCTION (hello_class)` 中注册，这里要稍稍解释一下这个方法的意思，<code>PHP_MINIT_FUNCTION</code> 是PHP执行的 <strong>模块初始化</strong> 的回调函数，也就是当 PHP 的声明周期走到 模块初始化 的时候，会调用这个方法。上代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PHP_MINIT_FUNCTION (hello_class)</span><br><span class="line">&#123;</span><br><span class="line">    zend_class_entry car;</span><br><span class="line">    INIT_CLASS_ENTRY(car, <span class="string">"Car"</span>, car_methods);</span><br><span class="line">    car_ce = zend_register_internal_class(&amp;car);</span><br><span class="line">    zend_declare_property_null(car_ce, <span class="string">"driver"</span>, <span class="keyword">sizeof</span>(<span class="string">"driver"</span>) - <span class="number">1</span>, ZEND_ACC_PROTECTED);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>zend_class_entry car; 这行创建一个类结构体</li>
+<li>INIT_CLASS_ENTRY(car, “Car”, car_methods);  这里初始化类，第一个参数是上面创建的 car ；第二个参数是类名；第三个参数就是之前定义的：const zend_function_entry car_methods[]；</li>
+<li>car_ce = zend_register_internal_class(&amp;car); 注册类; 参数为之前创建的 car; 返回值是 zend_class_entry 的指针，复制给我们定义的全局变量 car_ce;</li>
+<li>zend_declare_property_null(car_ce, “driver”, sizeof(“driver”) - 1, ZEND_ACC_PROTECTED); 这一行注册了类的属性 driver ，第一个参数是全局类结构指针，第二个参数是属性名；第三个参数是属性名长度；第四个参数是一个属性的掩码，ZEND_ACC_PROTECTED 表示该属性是 protected 的。</li>
+</ul>
+<h3 id="五-结束语"><a href="#五-结束语" class="headerlink" title="五. 结束语"></a>五. 结束语</h3><p>到这里为止，这个 Car 这个类已经在 PHP 扩展中实现了，可以直接在 php -a 中直接尝试 new 一个 car 来试一下，但是大家是否觉得有点缺失，类应该是需要有“继承” 的，那下一篇我们就介绍一下如何在PHP扩张中继承一个类。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/13/PHP扩展开发（2）--创建函数/" rel="next" title="PHP扩展开发（2）- 创建函数">
+                <i class="fa fa-chevron-left"></i> PHP扩展开发（2）- 创建函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/28/2018门罗币XMR挖矿教程/" rel="prev" title="2018门罗币XMR挖矿教程">
+                2018门罗币XMR挖矿教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80Mjk0Ny8xOTQ5Mw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="goodspb">
+            
+              <p class="site-author-name" itemprop="name">goodspb</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">66</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">47</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/goodspb" title="GitHub &rarr; https://github.com/goodspb" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:goodspb.luo@gmail.com" title="E-Mail &rarr; mailto:goodspb.luo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、声明类"><span class="nav-number">2.</span> <span class="nav-text">二、声明类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、实现类"><span class="nav-number">3.</span> <span class="nav-text">三、实现类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-这段是对函数-setDriver-配置参数"><span class="nav-number">3.1.</span> <span class="nav-text">1). 这段是对函数 setDriver 配置参数:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-这段是新建一个方法的入口："><span class="nav-number">3.2.</span> <span class="nav-text">2). 这段是新建一个方法的入口：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-具体实现特定的方法："><span class="nav-number">3.3.</span> <span class="nav-text">3). 具体实现特定的方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、注册类"><span class="nav-number">4.</span> <span class="nav-text">四、注册类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五-结束语"><span class="nav-number">5.</span> <span class="nav-text">五. 结束语</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">goodspb</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2018/02/15/PHP扩展开发（3）--创建类class/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

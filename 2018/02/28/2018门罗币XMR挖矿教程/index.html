@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言挖矿这种东西，其实什么时候都十分讲求时效性，这段时间尝试了一下用CPU来挖门罗币（XMR），可谓惨惨惨，先放一下战绩：  是的，你并没有看错，这大概是挖了4天的成功，我连矿池的手续费都为挖出来，泪目( Ĭ ^ Ĭ )……当然，我不是说我现在挖门罗币没有收益，我这个仅仅是开着玩而已，CPU挖起来十分费力，算力跟不上真正的显卡矿机。具体的显卡矿机的算力后面给出。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018门罗币XMR挖矿教程">
+<meta property="og:url" content="//goodspb.net/2018/02/28/2018门罗币XMR挖矿教程/index.html">
+<meta property="og:site_name" content="GoodSpb , Web Blog">
+<meta property="og:description" content="前言挖矿这种东西，其实什么时候都十分讲求时效性，这段时间尝试了一下用CPU来挖门罗币（XMR），可谓惨惨惨，先放一下战绩：  是的，你并没有看错，这大概是挖了4天的成功，我连矿池的手续费都为挖出来，泪目( Ĭ ^ Ĭ )……当然，我不是说我现在挖门罗币没有收益，我这个仅仅是开着玩而已，CPU挖起来十分费力，算力跟不上真正的显卡矿机。具体的显卡矿机的算力后面给出。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="//goodspb.net/images/2018/02/QQ截图20180228000204-1024x656.png">
+<meta property="og:image" content="//goodspb.net/images/2018/02/v2-f6a89fc7b0e296782fb2ea575f622ef3_r-1024x716.png">
+<meta property="og:image" content="//goodspb.net/images/2018/02/v2-7b728d41a1b37d79ddca1410fc9f3f9b_hd.png">
+<meta property="og:image" content="//goodspb.net/images/2018/02/v2-144365ac12e9aa83fad4713855d45c67_hd.png">
+<meta property="og:image" content="//goodspb.net/images/2018/02/v2-2ab9af3a301d1bdeb174abbc5e00d500_hd.png">
+<meta property="og:image" content="//goodspb.net/images/2018/02/v2-aad5a44235dc35e7ade9b88607c3dd4c_r-1024x395.png">
+<meta property="og:image" content="//goodspb.net/images/2018/02/微信截图_20180228003559.png">
+<meta property="og:updated_time" content="2019-03-02T12:18:51.476Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2018门罗币XMR挖矿教程">
+<meta name="twitter:description" content="前言挖矿这种东西，其实什么时候都十分讲求时效性，这段时间尝试了一下用CPU来挖门罗币（XMR），可谓惨惨惨，先放一下战绩：  是的，你并没有看错，这大概是挖了4天的成功，我连矿池的手续费都为挖出来，泪目( Ĭ ^ Ĭ )……当然，我不是说我现在挖门罗币没有收益，我这个仅仅是开着玩而已，CPU挖起来十分费力，算力跟不上真正的显卡矿机。具体的显卡矿机的算力后面给出。">
+<meta name="twitter:image" content="//goodspb.net/images/2018/02/QQ截图20180228000204-1024x656.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="GoodSpb , Web Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="//goodspb.net/2018/02/28/2018门罗币XMR挖矿教程/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>2018门罗币XMR挖矿教程 | GoodSpb , Web Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GoodSpb , Web Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">做一个高P格的程序猿</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="//goodspb.net/2018/02/28/2018门罗币XMR挖矿教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="goodspb">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoodSpb , Web Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2018门罗币XMR挖矿教程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-02-28 00:47:37" itemprop="dateCreated datePublished" datetime="2018-02-28T00:47:37+08:00">2018-02-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-02 20:18:51" itemprop="dateModified" datetime="2019-03-02T20:18:51+08:00">2019-03-02</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>挖矿这种东西，其实什么时候都十分讲求时效性，这段时间尝试了一下用CPU来挖门罗币（XMR），可谓惨惨惨，先放一下战绩： <a href="/images/2018/02/QQ截图20180228000204.png"><img src="/images/2018/02/QQ截图20180228000204-1024x656.png" alt></a> 是的，你并没有看错，这大概是挖了4天的成功，我连矿池的手续费都为挖出来，泪目( Ĭ ^ Ĭ )……当然，我不是说我现在挖门罗币没有收益，我这个仅仅是开着玩而已，CPU挖起来十分费力，算力跟不上真正的显卡矿机。具体的显卡矿机的算力后面给出。 </p>
+<a id="more"></a>
+<h3 id="准备钱包"><a href="#准备钱包" class="headerlink" title="准备钱包"></a>准备钱包</h3><p>当然，开始挖矿之前，我们需要一个门罗币的钱包，强烈推荐还是使用官方出品吧。主要是个人有点洁癖，不太放心在线的钱包。官网地址：<a href="https://getmonero.org/downloads/" target="_blank" rel="noopener">https://getmonero.org/downloads/ </a>。根据不同的系统环境，选择对应不同的GUI安装包，支持的系统有：</p>
+<ul>
+<li><a href="https://downloads.getmonero.org/gui/win64" target="_blank" rel="noopener">Windows, 64-bit</a></li>
+<li><a href="https://downloads.getmonero.org/cli/win32" target="_blank" rel="noopener">Windows, 32-bit</a></li>
+<li><a href="https://downloads.getmonero.org/gui/mac64" target="_blank" rel="noopener">Mac OS X, 64-bit</a></li>
+<li><a href="https://downloads.getmonero.org/gui/linux64" target="_blank" rel="noopener">Linux, 64-bit</a></li>
+<li><a href="https://downloads.getmonero.org/gui/linux32" target="_blank" rel="noopener">Linux, 32-bit</a></li>
+</ul>
+<p>本文以 windows 64位系统为例，下载完后，双击安装：</p>
+<h4 id="1-选择语言"><a href="#1-选择语言" class="headerlink" title="1. 选择语言"></a>1. 选择语言</h4><p><a href="/images/2018/02/v2-f6a89fc7b0e296782fb2ea575f622ef3_r.png"><img src="/images/2018/02/v2-f6a89fc7b0e296782fb2ea575f622ef3_r-1024x716.png" alt></a></p>
+<h4 id="2-然后点击创建一个新的钱包"><a href="#2-然后点击创建一个新的钱包" class="headerlink" title="2. 然后点击创建一个新的钱包"></a>2. 然后点击创建一个新的钱包</h4><p><a href="/images/2018/02/v2-7b728d41a1b37d79ddca1410fc9f3f9b_hd.png"><img src="/images/2018/02/v2-7b728d41a1b37d79ddca1410fc9f3f9b_hd.png" alt></a></p>
+<h4 id="3-记录种子码"><a href="#3-记录种子码" class="headerlink" title="3. 记录种子码"></a>3. 记录种子码</h4><p><a href="/images/2018/02/v2-144365ac12e9aa83fad4713855d45c67_hd.png"><img src="/images/2018/02/v2-144365ac12e9aa83fad4713855d45c67_hd.png" alt></a></p>
+<h4 id="4-添加钱包密码"><a href="#4-添加钱包密码" class="headerlink" title="4. 添加钱包密码"></a>4. 添加钱包密码</h4><p><a href="/images/2018/02/v2-2ab9af3a301d1bdeb174abbc5e00d500_hd.png"><img src="/images/2018/02/v2-2ab9af3a301d1bdeb174abbc5e00d500_hd.png" alt></a> 最后，同步完区块之后，你就可以点击“收款”按钮，然后找到自己的钱包地址了： <a href="/images/2018/02/v2-aad5a44235dc35e7ade9b88607c3dd4c_r.png"><img src="/images/2018/02/v2-aad5a44235dc35e7ade9b88607c3dd4c_r-1024x395.png" alt></a> 得到钱包地址之后，我们就可以开始挖矿了。  </p>
+<h3 id="获取矿池信息"><a href="#获取矿池信息" class="headerlink" title="获取矿池信息"></a>获取矿池信息</h3><p>想要挖矿，我们必须知道矿池地址，至于什么是矿池，你们需要自行搜索了。这里我们推荐：<a href="http://minexmr.com" target="_blank" rel="noopener">http://minexmr.com </a>。点击 “Getting Started”， 我们可以获取到一下信息：</p>
+<h4 id="1-矿池地址："><a href="#1-矿池地址：" class="headerlink" title="1. 矿池地址："></a>1. 矿池地址：</h4><p>欧洲 (法国, 德国): pool.minexmr.com</p>
+<p>法国: fr.minexmr.com</p>
+<p>德国: de.minexmr.com</p>
+<p>加拿大: ca.minexmr.com</p>
+<p>新加坡: sg.minexmr.com</p>
+<pre><code>这里我们选择离我们最近的新加坡：sg.minexmr.com
+</code></pre><h4 id="2-矿池端口："><a href="#2-矿池端口：" class="headerlink" title="2. 矿池端口："></a>2. 矿池端口：</h4><p>4444,5555, 7777, 80, 443,3333,6666</p>
+<pre><code>其中，端口和你拥有的算力有一定的关系，这里我们选择最低难度的 4444  或者 5555。
+</code></pre><h3 id="获取挖矿软件"><a href="#获取挖矿软件" class="headerlink" title="获取挖矿软件"></a>获取挖矿软件</h3><pre><code>挖矿的话，当然少不了挖矿的软件了，我们这里选择：xmr-stak，算是当前挖门罗币效率最高的软件了，github 地址：[https://github.com/fireice-uk/xmr-stak](https://github.com/fireice-uk/xmr-stak)， windows 版下载地址：[https://github.com/fireice-uk/xmr-stak/releases/download/v2.2.0/xmr-stak-win64.zip](https://github.com/fireice-uk/xmr-stak/releases/download/v2.2.0/xmr-stak-win64.zip) ，使用十分简单，下载完成后会出现以下5个文件：
+</code></pre><p><a href="/images/2018/02/微信截图_20180228003559.png"><img src="/images/2018/02/微信截图_20180228003559.png" alt></a></p>
+<p>双击文件 xmr-stak.exe 即可，按照提示分别输入：</p>
+<ol>
+<li>monero</li>
+<li>sg.minexmr.com:4444</li>
+<li>你的钱包地址</li>
+<li>x</li>
+<li>N</li>
+<li>n</li>
+<li>n</li>
+</ol>
+<p>然后就可以开始挖矿咯。最后，你当然希望可以看到现在自己实时的收益，就好像文章开头我那图片一样，可以点击：<a href="http://minexmr.com/#worker_stats" target="_blank" rel="noopener">http://minexmr.com/#worker_stats</a>，输入你的钱包地址就可以看到自己实时的收益了。  </p>
+<h3 id="关于算力、收益"><a href="#关于算力、收益" class="headerlink" title="关于算力、收益"></a>关于算力、收益</h3><p>大家看到我现在的收益图也可以看出，我CPU的算力只有大概 100H/s，而且十分不稳定，当然，假如你用的是显卡矿机，例如 1060 6G * 6 这样的话，一张显卡的算力大概在 400 - 500 H/s ，那6张显卡就是 3000 了，收益是我现在30倍，减去电费和矿池的手续费(0.004XMR)，收益还是还是相当可观的，加上升值的话，可能收益更大。   <strong>但是，投资有风险，入市需谨慎啊朋友们。</strong></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/15/PHP扩展开发（3）--创建类class/" rel="next" title="PHP扩展开发（3）- 创建类class">
+                <i class="fa fa-chevron-left"></i> PHP扩展开发（3）- 创建类class
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/03/Linux日志查看常用命令大全/" rel="prev" title="Linux日志查看常用命令大全">
+                Linux日志查看常用命令大全 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80Mjk0Ny8xOTQ5Mw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="goodspb">
+            
+              <p class="site-author-name" itemprop="name">goodspb</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">66</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">47</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/goodspb" title="GitHub &rarr; https://github.com/goodspb" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:goodspb.luo@gmail.com" title="E-Mail &rarr; mailto:goodspb.luo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备钱包"><span class="nav-number">2.</span> <span class="nav-text">准备钱包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-选择语言"><span class="nav-number">2.1.</span> <span class="nav-text">1. 选择语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-然后点击创建一个新的钱包"><span class="nav-number">2.2.</span> <span class="nav-text">2. 然后点击创建一个新的钱包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-记录种子码"><span class="nav-number">2.3.</span> <span class="nav-text">3. 记录种子码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-添加钱包密码"><span class="nav-number">2.4.</span> <span class="nav-text">4. 添加钱包密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取矿池信息"><span class="nav-number">3.</span> <span class="nav-text">获取矿池信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-矿池地址："><span class="nav-number">3.1.</span> <span class="nav-text">1. 矿池地址：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-矿池端口："><span class="nav-number">3.2.</span> <span class="nav-text">2. 矿池端口：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取挖矿软件"><span class="nav-number">4.</span> <span class="nav-text">获取挖矿软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于算力、收益"><span class="nav-number">5.</span> <span class="nav-text">关于算力、收益</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">goodspb</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2018/02/28/2018门罗币XMR挖矿教程/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

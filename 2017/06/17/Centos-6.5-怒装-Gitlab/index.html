@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Git 服务器的可选范围? Gitlab gogs  假如现在让我重新选，那其实轻量级的gogs其实也不差，因为Gitlab实在实在实在太”重“了。">
+<meta name="keywords" content="gitlab,运维">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos 6.5 怒装 Gitlab">
+<meta property="og:url" content="//goodspb.net/2017/06/17/Centos-6.5-怒装-Gitlab/index.html">
+<meta property="og:site_name" content="GoodSpb , Web Blog">
+<meta property="og:description" content="Git 服务器的可选范围? Gitlab gogs  假如现在让我重新选，那其实轻量级的gogs其实也不差，因为Gitlab实在实在实在太”重“了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-02T12:18:51.477Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Centos 6.5 怒装 Gitlab">
+<meta name="twitter:description" content="Git 服务器的可选范围? Gitlab gogs  假如现在让我重新选，那其实轻量级的gogs其实也不差，因为Gitlab实在实在实在太”重“了。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="GoodSpb , Web Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="//goodspb.net/2017/06/17/Centos-6.5-怒装-Gitlab/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Centos 6.5 怒装 Gitlab | GoodSpb , Web Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GoodSpb , Web Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">做一个高P格的程序猿</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="//goodspb.net/2017/06/17/Centos-6.5-怒装-Gitlab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="goodspb">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoodSpb , Web Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Centos 6.5 怒装 Gitlab
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-17 20:59:32" itemprop="dateCreated datePublished" datetime="2017-06-17T20:59:32+08:00">2017-06-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-02 20:18:51" itemprop="dateModified" datetime="2019-03-02T20:18:51+08:00">2019-03-02</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux-Unix/" itemprop="url" rel="index"><span itemprop="name">Linux/Unix</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Git-服务器的可选范围"><a href="#Git-服务器的可选范围" class="headerlink" title="Git 服务器的可选范围?"></a>Git 服务器的可选范围?</h3><ul>
+<li><a href="https://gitlab.com/" target="_blank" rel="noopener">Gitlab</a></li>
+<li><a href="https://github.com/gogits/gogs" target="_blank" rel="noopener">gogs</a></li>
+</ul>
+<p>假如现在让我重新选，那其实轻量级的gogs其实也不差，因为Gitlab实在实在实在太”重“了。</p>
+<a id="more"></a>
+<h3 id="对机器的要求"><a href="#对机器的要求" class="headerlink" title="对机器的要求"></a>对机器的要求</h3><ul>
+<li>2核CPU</li>
+<li>4G内存（至少2G）</li>
+</ul>
+<p>我的单核CPU+2G内存，Gitlab经常ENOMEM…</p>
+<h3 id="安装-gitlab-ce-的源"><a href="#安装-gitlab-ce-的源" class="headerlink" title="安装 gitlab-ce 的源"></a>安装 gitlab-ce 的源</h3><p>想直接从 gitlab 官网下载？国内的网络环境你又不是不知道，还是乖乖选择国内源吧，可以选择清华大学源：</p>
+<pre><code>cd ~
+curl -LJO https://mirror.tuna.tsinghua.edu.cn/gitlab-ce/yum/el6/gitlab-ce-9.2.6-ce.0.el6.x86_64.rpm
+rpm -i gitlab-ce-9.2.6-ce.0.el6.x86_64.rpm
+</code></pre><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><pre><code>sudo yum install curl openssh-server openssh-clients postfix cronie
+sudo service postfix start
+sudo chkconfig postfix on
+</code></pre><h3 id="安装-gitlab-ce-ce就是社区版的意思哦"><a href="#安装-gitlab-ce-ce就是社区版的意思哦" class="headerlink" title="安装 gitlab-ce (ce就是社区版的意思哦)"></a>安装 gitlab-ce (ce就是社区版的意思哦)</h3><pre><code>sudo yum install gitlab-ce
+</code></pre><h3 id="配置-gitlab"><a href="#配置-gitlab" class="headerlink" title="配置 gitlab"></a>配置 gitlab</h3><p>由于 gitlab 的一键安装是包含以下服务的</p>
+<ul>
+<li>Nginx</li>
+<li>PostgreSQL</li>
+<li>Redis</li>
+<li>gitlab</li>
+</ul>
+<p>你需要先确认你当前机器是否有Nginx &amp; Redis &amp; PostgreSQL 这类服务了，然后，你需要根据自己需要来配置 gitlab：</p>
+<pre><code>vim /etc/gitlab/gitlab.rb
+</code></pre><h3 id="假如本来有-Nginx-服务的，可以关于gitlab自带的nginx"><a href="#假如本来有-Nginx-服务的，可以关于gitlab自带的nginx" class="headerlink" title="假如本来有 Nginx 服务的，可以关于gitlab自带的nginx"></a>假如本来有 Nginx 服务的，可以关于gitlab自带的nginx</h3><pre><code>nginx[&apos;enable&apos;] = false
+</code></pre><h4 id="然后在自己的Nginx-加入配置："><a href="#然后在自己的Nginx-加入配置：" class="headerlink" title="然后在自己的Nginx 加入配置："></a>然后在自己的Nginx 加入配置：</h4><pre><code># gitlab socket 文件地址
+upstream gitlab {
+  server unix://var/opt/gitlab/gitlab-rails/sockets/gitlab.socket;
+}
+
+server {
+  listen 80;
+
+  server_name git.goodspb.com;   # 请修改为你的域名
+
+  server_tokens off;     # don&apos;t show the version number, a security best practice
+  root /opt/gitlab/embedded/service/gitlab-rails/public;
+
+  # Increase this if you want to upload large attachments
+  # Or if you want to accept large git objects over http
+  client_max_body_size 0;
+
+  # individual nginx logs for this gitlab vhost
+  access_log  /var/log/gitlab/nginx/gitlab_access.log;
+  error_log   /var/log/gitlab/nginx/gitlab_error.log;
+
+  location / {
+    # serve static files from defined root folder;.
+    # @gitlab is a named location for the upstream fallback, see below
+    try_files $uri $uri/index.html $uri.html @gitlab;
+  }
+
+  # if a file, which is not found in the root folder is requested,
+  # then the proxy pass the request to the upsteam (gitlab unicorn)
+  location @gitlab {
+    # If you use https make sure you disable gzip compression 
+    # to be safe against BREACH attack
+
+    proxy_read_timeout 300; # Some requests take more than 30 seconds.
+    proxy_connect_timeout 300; # Some requests take more than 30 seconds.
+    proxy_redirect     off;
+
+
+    proxy_set_header   Host              $http_host;
+    proxy_set_header   X-Real-IP         $remote_addr;
+    proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Frame-Options   SAMEORIGIN;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+
+    proxy_pass http://gitlab;
+  }
+
+  # Enable gzip compression as per rails guide: http://guides.rubyonrails.org/asset_pipeline.html#gzip-compression
+  # WARNING: If you are using relative urls do remove the block below
+  # See config/application.rb under &quot;Relative url support&quot; for the list of
+  # other files that need to be changed for relative url support
+  location ~ ^/(assets)/  {
+    root /opt/gitlab/embedded/service/gitlab-rails/public;
+    # gzip_static on; # to serve pre-gzipped version
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  error_page 502 /502.html;
+}
+</code></pre><h3 id="假如本来就有-Redis-服务，可以："><a href="#假如本来就有-Redis-服务，可以：" class="headerlink" title="假如本来就有 Redis 服务，可以："></a>假如本来就有 Redis 服务，可以：</h3><pre><code># 关闭原来redis
+redis[&apos;enable&apos;] = false
+
+# 配置自己的redis信息
+gitlab_rails[&apos;redis_host&apos;] = &quot;127.0.0.1&quot;
+gitlab_rails[&apos;redis_port&apos;] = 6379
+gitlab_rails[&apos;redis_password&apos;] = nil
+gitlab_rails[&apos;redis_database&apos;] = 0
+</code></pre><p>### 还需要配置SMTP邮件服务，不然邮件发不出，就不能完成注册了</p>
+<pre><code> # 修改以下配置
+gitlab_rails[&apos;smtp_enable&apos;] = true
+gitlab_rails[&apos;smtp_address&apos;] = &quot;smtp.163.com&quot;
+gitlab_rails[&apos;smtp_port&apos;] = 25
+gitlab_rails[&apos;smtp_user_name&apos;] = &quot;abc@163.com&quot;
+gitlab_rails[&apos;smtp_password&apos;] = &quot;xxxxxx&quot;
+gitlab_rails[&apos;smtp_domain&apos;] = &quot;163.com&quot;
+gitlab_rails[&apos;smtp_authentication&apos;] = &quot;login&quot;
+gitlab_rails[&apos;smtp_enable_starttls_auto&apos;] = true
+gitlab_rails[&apos;smtp_tls&apos;] = false
+
+gitlab_rails[&apos;gitlab_email_enabled&apos;] = true
+gitlab_rails[&apos;gitlab_email_from&apos;] = &apos;abc@163.com&apos;     # 有些服务商如 163，需要将 gitlab_email_from 和 git_user_email 和 smtp_user_name 设置成相同的
+user[&apos;git_user_email&apos;] = &quot;abc@163.com&quot;
+</code></pre><blockquote>
+<p>设置好想调试邮件，可以在命令行执行 <code>gitlab-rails console</code> ，然后再在ruby命令行执行：</p>
+</blockquote>
+<pre><code>Notify.test_email(&apos;destination_email@address.com&apos;, &apos;Message Subject&apos;, &apos;Message Body&apos;).deliver_now
+</code></pre><p>更多邮件设置，可以查看<a href="https://docs.gitlab.com/omnibus/settings/smtp.html" target="_blank" rel="noopener">官方文档</a></p>
+<h3 id="设置时区"><a href="#设置时区" class="headerlink" title="设置时区"></a>设置时区</h3><pre><code>gitlab_rails[&apos;time_zone&apos;] = &apos;Asia/Shanghai&apos;
+</code></pre><h3 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h3><pre><code>external_url &apos;http://git.goodspb.com/&apos;
+</code></pre><h3 id="假如还是-SSL-的话，好需要配置"><a href="#假如还是-SSL-的话，好需要配置" class="headerlink" title="假如还是 SSL 的话，好需要配置"></a>假如还是 SSL 的话，好需要配置</h3><pre><code>nginx[&apos;listen_port&apos;] = 80
+
+##! **Override only if your reverse proxy internally communicates over HTTP**
+##! Docs: https://docs.gitlab.com/omnibus/settings/nginx.html#supporting-proxied-ssl
+ nginx[&apos;listen_https&apos;] = false
+
+# nginx[&apos;custom_gitlab_server_config&apos;] = &quot;location ^~ /foo-namespace/bar-project/raw/ {\n deny all;\n}\n&quot;
+# nginx[&apos;custom_nginx_config&apos;] = &quot;include /etc/nginx/conf.d/example.conf;&quot;
+# nginx[&apos;proxy_read_timeout&apos;] = 3600
+# nginx[&apos;proxy_connect_timeout&apos;] = 300
+ nginx[&apos;proxy_set_headers&apos;] = {
+#  &quot;Host&quot; =&gt; &quot;$http_host_with_default&quot;,
+#  &quot;X-Real-IP&quot; =&gt; &quot;$remote_addr&quot;,
+#  &quot;X-Forwarded-For&quot; =&gt; &quot;$proxy_add_x_forwarded_for&quot;,
+  &quot;X-Forwarded-Proto&quot; =&gt; &quot;https&quot;,
+  &quot;X-Forwarded-Ssl&quot; =&gt; &quot;on&quot;,
+#  &quot;Upgrade&quot; =&gt; &quot;$http_upgrade&quot;,
+#  &quot;Connection&quot; =&gt; &quot;$connection_upgrade&quot;
+ }
+</code></pre><h3 id="配置差不多了，可以重启服务了"><a href="#配置差不多了，可以重启服务了" class="headerlink" title="配置差不多了，可以重启服务了"></a>配置差不多了，可以重启服务了</h3><pre><code># 执行命令
+sudo gitlab-ctl reconfigure
+</code></pre><h3 id="查看-log"><a href="#查看-log" class="headerlink" title="查看 log"></a>查看 log</h3><pre><code>sudo gitlab-ctl tail
+</code></pre><p>Have fun.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+          
+            <a href="/tags/运维/" rel="tag"># 运维</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/31/使用-ssh-加代理来进行-rsync/" rel="next" title="使用 ssh 加代理来进行 rsync">
+                <i class="fa fa-chevron-left"></i> 使用 ssh 加代理来进行 rsync
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/06/推荐5个内容外包中介网站/" rel="prev" title="推荐5个内容外包中介网站">
+                推荐5个内容外包中介网站 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80Mjk0Ny8xOTQ5Mw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="goodspb">
+            
+              <p class="site-author-name" itemprop="name">goodspb</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">66</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">47</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/goodspb" title="GitHub &rarr; https://github.com/goodspb" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:goodspb.luo@gmail.com" title="E-Mail &rarr; mailto:goodspb.luo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-服务器的可选范围"><span class="nav-number">1.</span> <span class="nav-text">Git 服务器的可选范围?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对机器的要求"><span class="nav-number">2.</span> <span class="nav-text">对机器的要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-gitlab-ce-的源"><span class="nav-number">3.</span> <span class="nav-text">安装 gitlab-ce 的源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖"><span class="nav-number">4.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-gitlab-ce-ce就是社区版的意思哦"><span class="nav-number">5.</span> <span class="nav-text">安装 gitlab-ce (ce就是社区版的意思哦)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-gitlab"><span class="nav-number">6.</span> <span class="nav-text">配置 gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#假如本来有-Nginx-服务的，可以关于gitlab自带的nginx"><span class="nav-number">7.</span> <span class="nav-text">假如本来有 Nginx 服务的，可以关于gitlab自带的nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#然后在自己的Nginx-加入配置："><span class="nav-number">7.1.</span> <span class="nav-text">然后在自己的Nginx 加入配置：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#假如本来就有-Redis-服务，可以："><span class="nav-number">8.</span> <span class="nav-text">假如本来就有 Redis 服务，可以：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置时区"><span class="nav-number">9.</span> <span class="nav-text">设置时区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置域名"><span class="nav-number">10.</span> <span class="nav-text">设置域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#假如还是-SSL-的话，好需要配置"><span class="nav-number">11.</span> <span class="nav-text">假如还是 SSL 的话，好需要配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置差不多了，可以重启服务了"><span class="nav-number">12.</span> <span class="nav-text">配置差不多了，可以重启服务了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看-log"><span class="nav-number">13.</span> <span class="nav-text">查看 log</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">goodspb</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2017/06/17/Centos-6.5-怒装-Gitlab/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
