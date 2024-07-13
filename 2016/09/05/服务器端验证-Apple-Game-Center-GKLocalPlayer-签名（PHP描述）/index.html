@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"goodspb.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="前提苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： https:&#x2F;&#x2F;developer.apple.com&#x2F;library&#x2F;mac&#x2F;documentation&#x2F;GameKit&#x2F;Reference&#x2F;GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&#x2F;instm&#x2F;GKLocalPlayer&#x2F;">
+  <meta name="description" content="前提苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： https:&#x2F;&#x2F;developer.apple.com&#x2F;library&#x2F;mac&#x2F;documentation&#x2F;GameKit&#x2F;Reference&#x2F;GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务器端验证 Apple Game Center GKLocalPlayer 签名（PHP描述）">
 <meta property="og:url" content="https://goodspb.com/2016/09/05/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E9%AA%8C%E8%AF%81-Apple-Game-Center-GKLocalPlayer-%E7%AD%BE%E5%90%8D%EF%BC%88PHP%E6%8F%8F%E8%BF%B0%EF%BC%89/index.html">
 <meta property="og:site_name" content="Malvin&#39;s Blog">
-<meta property="og:description" content="前提苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： https:&#x2F;&#x2F;developer.apple.com&#x2F;library&#x2F;mac&#x2F;documentation&#x2F;GameKit&#x2F;Reference&#x2F;GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&#x2F;instm&#x2F;GKLocalPlayer&#x2F;">
+<meta property="og:description" content="前提苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： https:&#x2F;&#x2F;developer.apple.com&#x2F;library&#x2F;mac&#x2F;documentation&#x2F;GameKit&#x2F;Reference&#x2F;GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://goodspb.com/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png">
 <meta property="article:published_time" content="2016-09-05T04:09:20.000Z">
@@ -215,7 +215,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><p>苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： <a href="https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler" target="_blank" rel="noopener">https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler</a> 重点在于整个验证的描述： <a href="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png"><img src="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png" alt="97C40134-873E-4A9E-9986-F4A66EF1E2C0"></a> 由此可见，服务端需要接受来自客户端的参数有以下 <code>6</code> 个：</p>
+        <h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><p>苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： <a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler">https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&#x2F;instm&#x2F;GKLocalPlayer&#x2F;generateIdentityVerificationSignatureWithCompletionHandler</a> 重点在于整个验证的描述： <a href="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png"><img src="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png" alt="97C40134-873E-4A9E-9986-F4A66EF1E2C0"></a> 由此可见，服务端需要接受来自客户端的参数有以下 <code>6</code> 个：</p>
 <ol>
 <li>publicKeyURL</li>
 <li>playerID</li>
@@ -224,27 +224,30 @@
 <li>signature</li>
 <li>salt</li>
 </ol>
-<a id="more"></a>
+<span id="more"></span>
+
 <h4 id="参数预处理"><a href="#参数预处理" class="headerlink" title="参数预处理"></a>参数预处理</h4><p>其中，<code>timestamp</code> 需要注意，这不是字面意义上的 时间戳 ，实际上是 <code>Big-Endian UInt-64 format</code> 表示的时间值。需要再PHP中识别，我们需要作一下处理：</p>
-<pre><code>function unpackTimestamp($timestamp)
-{
-    $highMap = 0xffffffff00000000;
-    $lowMap = 0x00000000ffffffff;
-    $higher = ($timestamp &amp; $highMap) &gt;&gt; 32;
-    $lower = $timestamp &amp; $lowMap;
-    return pack(&apos;NN&apos;, $higher, $lower);
-}
-</code></pre><p>还有，<code>publicKeyURL</code> 是一个 <code>.cer</code> 结尾的签名文件，我们需要将佢做一定的格式编码，可以这样处理：</p>
-<pre><code>function getPublicKey($url)
-{
-    $content = file_get_content($url); //建议使用 curl 来处理，这里为了演示简单直接使用 file_get_content 
-    return &apos;-----BEGIN CERTIFICATE-----&apos; . PHP_EOL .
-            chunk_split(base64_encode($content), 64, PHP_EOL) .
-            &apos;-----END CERTIFICATE-----&apos;. PHP_EOL;
-}
-</code></pre><p>最后，<code>signature</code> 和 <code>salt</code> 均需进行 <code>base64_decode</code> 。</p>
+<pre><code>    function unpackTimestamp($timestamp)
+    &#123;
+        $highMap = 0xffffffff00000000;
+        $lowMap = 0x00000000ffffffff;
+        $higher = ($timestamp &amp; $highMap) &gt;&gt; 32;
+        $lower = $timestamp &amp; $lowMap;
+        return pack(&#39;NN&#39;, $higher, $lower);
+    &#125;
+</code></pre>
+<p>还有，<code>publicKeyURL</code> 是一个 <code>.cer</code> 结尾的签名文件，我们需要将佢做一定的格式编码，可以这样处理：</p>
+<pre><code>    function getPublicKey($url)
+    &#123;
+        $content = file_get_content($url); //建议使用 curl 来处理，这里为了演示简单直接使用 file_get_content 
+        return &#39;-----BEGIN CERTIFICATE-----&#39; . PHP_EOL .
+                chunk_split(base64_encode($content), 64, PHP_EOL) .
+                &#39;-----END CERTIFICATE-----&#39;. PHP_EOL;
+    &#125;
+</code></pre>
+<p>最后，<code>signature</code> 和 <code>salt</code> 均需进行 <code>base64_decode</code> 。</p>
 <h4 id="验证签名"><a href="#验证签名" class="headerlink" title="验证签名"></a>验证签名</h4><pre><code>function checkSignature($publicKeyURL, $playerID, $bundleID, $timestamp, $signature, $salt)
-{
+&#123;
         $publicKey = getPublicKey($publicKeyURL);
                 $timestamp = unpackTimestamp($timestamp);
                 $signature = base64_decode($signature);
@@ -255,12 +258,13 @@
                 $result = openssl_verify($data, $signature, openssl_pkey_get_public($publicKey), OPENSSL_ALGO_SHA256);
         openssl_free_key($publicKey);
 
-                if ( 1 === $result) {
+                if ( 1 === $result) &#123;
                       return true;
-                }
+                &#125;
                 return false;
-}
-</code></pre><p>当 <code>checkSignature</code> 函数返回 <code>true</code> 时，表示签名验证通过。</p>
+&#125;
+</code></pre>
+<p>当 <code>checkSignature</code> 函数返回 <code>true</code> 时，表示签名验证通过。</p>
 <blockquote>
 <p>好了，大体的验证流程就是这样了。当验证通过的时候，就可以使用 <code>playerID</code> 来在自己的用户系统中生成唯一的用户ID了。 Have fun.</p>
 </blockquote>
@@ -411,7 +415,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

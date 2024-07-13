@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -216,13 +216,26 @@
         <p>Redis 的有序集合貌似很厉害，与SQL 中的order其实有点相似； </p>
 <p><strong>一、应用场景：排行榜</strong> </p>
 <p><strong>二、常用的函数命令：</strong> </p>
-<p>1、ZADD ：添加一个或多个成员到有序集合，或者如果它已经存在更新其分数<br>2、ZRANGE：由索引返回一个成员范围的有序集合<br>3、ZREM：从有序集合中删除一个或多个成员   </p>
-<a id="more"></a>
+<p>1、ZADD ：添加一个或多个成员到有序集合，或者如果它已经存在更新其分数<br>2、ZRANGE：由索引返回一个成员范围的有序集合<br>3、ZREM：从有序集合中删除一个或多个成员   </p>
+<span id="more"></span>
+
 <p><strong>三、具体事例：</strong></p>
-<p>redis 127.0.0.1:6379&gt; ZADD tutorials 1 redis       //添加<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZADD tutorials 2 mongodb     //添加<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZADD tutorials 3 mysql       //添加<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZADD tutorials 3 mysql       //更新分数<br>(integer) 0<br>redis 127.0.0.1:6379&gt; ZADD tutorials 4 mysql       //更新分数<br>(integer) 0<br>redis 127.0.0.1:6379&gt; ZRANGE tutorials 0 10 WITHSCORES</p>
-<p>1) “redis”<br>2) “1”<br>3) “mongodb”<br>4) “2”<br>5) “mysql”<br>6) “4”</p>
-<p>redis 127.0.0.1:6379&gt; ZREM mongodb    //删除<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZRANGE tutorials 0 10 WITHSCORES</p>
-<p>1) “redis”<br>2) “1”<br>3) “mysql”<br>4) “4”</p>
+<p>redis 127.0.0.1:6379&gt; ZADD tutorials 1 redis       &#x2F;&#x2F;添加<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZADD tutorials 2 mongodb     &#x2F;&#x2F;添加<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZADD tutorials 3 mysql       &#x2F;&#x2F;添加<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZADD tutorials 3 mysql       &#x2F;&#x2F;更新分数<br>(integer) 0<br>redis 127.0.0.1:6379&gt; ZADD tutorials 4 mysql       &#x2F;&#x2F;更新分数<br>(integer) 0<br>redis 127.0.0.1:6379&gt; ZRANGE tutorials 0 10 WITHSCORES</p>
+<ol>
+<li>“redis”</li>
+<li>“1”</li>
+<li>“mongodb”</li>
+<li>“2”</li>
+<li>“mysql”</li>
+<li>“4”</li>
+</ol>
+<p>redis 127.0.0.1:6379&gt; ZREM mongodb    &#x2F;&#x2F;删除<br>(integer) 1<br>redis 127.0.0.1:6379&gt; ZRANGE tutorials 0 10 WITHSCORES</p>
+<ol>
+<li>“redis”</li>
+<li>“1”</li>
+<li>“mysql”</li>
+<li>“4”</li>
+</ol>
 
     </div>
 
@@ -369,7 +382,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -285,7 +285,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Redis 2.4版本之后就内置队列的功能了，如果是日常比较简单的队列应用，可以选择Redis , 效率还很高的！！   Redis 还能实现 <strong>有序</strong> 和 <strong>无序</strong> 两种队列（只讨论生产者和消费者这种模式的队列）： </p>
+          <p>Redis 2.4版本之后就内置队列的功能了，如果是日常比较简单的队列应用，可以选择Redis , 效率还很高的！！   Redis 还能实现 <strong>有序</strong> 和 <strong>无序</strong> 两种队列（只讨论生产者和消费者这种模式的队列）： </p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2014/12/03/Redis-%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-MQ/#more" rel="contents">
@@ -362,7 +362,7 @@
           <p>Redis 的有序集合貌似很厉害，与SQL 中的order其实有点相似； </p>
 <p><strong>一、应用场景：排行榜</strong> </p>
 <p><strong>二、常用的函数命令：</strong> </p>
-<p>1、ZADD ：添加一个或多个成员到有序集合，或者如果它已经存在更新其分数<br>2、ZRANGE：由索引返回一个成员范围的有序集合<br>3、ZREM：从有序集合中删除一个或多个成员   </p>
+<p>1、ZADD ：添加一个或多个成员到有序集合，或者如果它已经存在更新其分数<br>2、ZRANGE：由索引返回一个成员范围的有序集合<br>3、ZREM：从有序集合中删除一个或多个成员   </p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2014/11/23/Redis-%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88-ZADD/#more" rel="contents">
@@ -436,7 +436,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在我们编写自己的第一个php扩展之前，先了解一下php的整体架构和运行机制。 <a href="/images/2014/11/0.png"><img src="/images/2014/11/0.png" alt="0"></a> php的架构如图1所示。其中一个重要的就是SAPI（服务器端应用编程端口），它使得PHP可以和其他应用进行数据交互，把外部错综复杂的外部环境进行抽象化，为内部的php提供一套固定和统一的接口，使得php自身不受外部影响，保持一定的独立性。常见的SAPI有CGI，FastCGI，Shell的CLI，apache的mod_php5，IIS的ISAPI。 另外一个非常重要就是ZendEngine。Zend Engine是官方提供的PHP实现的核心，提供了语言实现上的基础设施，其他比较知名的还有facebook的hiphop实现。例如PHP的语法实现，脚本的编译运行环境，扩展机制以及内存管理等。我们在后面编写php扩展时，也将基于Zend Engine。 PHP3时代还是采用边解释边执行的运行方式，这种方式运行效率很受影响，其次代码整体耦合度比较高，可扩展性也不够好。因此随着php在web应用开发中的普及，于是ZeevSuraski和Andi Gutmans决定重写代码以解决这两个问题，最终他们俩把该项技术的核心引擎命名为Zend Engine 。 Zend Engine最主要的特性就是把PHP的边解释边执行的运行方式改为先预编译(Compile)，再执行(Execute)。这两者的分开给 PHP 带来了革命性的变化：执行效率大幅提高。由于实行了功能分离，降低了模块间耦合度，可扩展性也大大增强。 目前PHP的实现和Zend Engine之间的关系非常紧密，例如很多PHP扩展都是使用的Zend API，而Zend正是PHP语言本身的实现，PHP只是使用Zend这个内核来构建PHP语言的，而PHP扩展大都使用Zend API，这就导致PHP的很多扩展和Zend引擎耦合在一起了，后来才有PHP核心开发者就提出将这种耦合解开的建议。不过下面我们还下面在Zend Engine的基础上开始编写我们第一个简单的php扩展。  </p>
+          <p>在我们编写自己的第一个php扩展之前，先了解一下php的整体架构和运行机制。 <a href="/images/2014/11/0.png"><img src="/images/2014/11/0.png" alt="0"></a> php的架构如图1所示。其中一个重要的就是SAPI（服务器端应用编程端口），它使得PHP可以和其他应用进行数据交互，把外部错综复杂的外部环境进行抽象化，为内部的php提供一套固定和统一的接口，使得php自身不受外部影响，保持一定的独立性。常见的SAPI有CGI，FastCGI，Shell的CLI，apache的mod_php5，IIS的ISAPI。 另外一个非常重要就是ZendEngine。Zend Engine是官方提供的PHP实现的核心，提供了语言实现上的基础设施，其他比较知名的还有facebook的hiphop实现。例如PHP的语法实现，脚本的编译运行环境，扩展机制以及内存管理等。我们在后面编写php扩展时，也将基于Zend Engine。 PHP3时代还是采用边解释边执行的运行方式，这种方式运行效率很受影响，其次代码整体耦合度比较高，可扩展性也不够好。因此随着php在web应用开发中的普及，于是ZeevSuraski和Andi Gutmans决定重写代码以解决这两个问题，最终他们俩把该项技术的核心引擎命名为Zend Engine 。 Zend Engine最主要的特性就是把PHP的边解释边执行的运行方式改为先预编译(Compile)，再执行(Execute)。这两者的分开给 PHP 带来了革命性的变化：执行效率大幅提高。由于实行了功能分离，降低了模块间耦合度，可扩展性也大大增强。 目前PHP的实现和Zend Engine之间的关系非常紧密，例如很多PHP扩展都是使用的Zend API，而Zend正是PHP语言本身的实现，PHP只是使用Zend这个内核来构建PHP语言的，而PHP扩展大都使用Zend API，这就导致PHP的很多扩展和Zend引擎耦合在一起了，后来才有PHP核心开发者就提出将这种耦合解开的建议。不过下面我们还下面在Zend Engine的基础上开始编写我们第一个简单的php扩展。  </p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2014/11/15/%E5%A6%82%E4%BD%95%E7%94%A8C%E5%86%99-PHP%E6%89%A9%E5%B1%95/#more" rel="contents">
@@ -510,7 +510,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在实际的开发当中，当系统需要使用简单的任务列表的时候，我们可以使用Redis来充当队列（因为Redis本来就自带队列，简单易用，效率也不低，免去使用MQ等麻烦）。 使用Redis的队列，我们要记住2个常用的命令 ： LPUSH  &amp; LPOP 上面两个命令是不是很熟悉：PUSH 和 POP ，不错，其实就是这个英文，只是在前面加上L大写开头。   上例子（PHP）： </p>
+          <p>在实际的开发当中，当系统需要使用简单的任务列表的时候，我们可以使用Redis来充当队列（因为Redis本来就自带队列，简单易用，效率也不低，免去使用MQ等麻烦）。 使用Redis的队列，我们要记住2个常用的命令 ： LPUSH  &amp; LPOP 上面两个命令是不是很熟悉：PUSH 和 POP ，不错，其实就是这个英文，只是在前面加上L大写开头。   上例子（PHP）： </p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2014/10/03/%E7%94%A8-Redis--%E5%AE%9E%E7%8E%B0%E6%97%A0%E5%BA%8F%E9%98%9F%E5%88%97-LPUSH--LPOP/#more" rel="contents">
@@ -588,7 +588,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>想删除 ubuntu 服务器下的所有 php5.4 的软件，例如：php5.4-cli, php5.4-fpm 等, 但是一个一个来删除，有点难度啊，所以，查了一下，可以使用一下方法： 1、直接 apt-get purge</p>
+          <p>想删除 ubuntu 服务器下的所有 php5.4 的软件，例如：php5.4-cli, php5.4-fpm 等, 但是一个一个来删除，有点难度啊，所以，查了一下，可以使用一下方法： 1、直接 apt-get purge</p>
 <p>sudo apt-get purge php5.4*</p>
 <p>2、apt-get purge + 筛选函数</p>
 <p>sudo apt-get purge `dpkg -l | grep php5.4 | awk ‘{print $2}’ |tr “\n” “ “`</p>
@@ -736,9 +736,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>安装软件的时候可能出现缺少头文件而导致的安装失败，笔者就尝试过，在安装 pip install Scrapy 的时候，就出现过：</p>
-<p>Command “/usr/bin/python -c “import setuptools, tokenize;__file__=’/private/tmp/pip-build-UX3Es9/lxml/setup.py’;exec(compile(getattr(tokenize, ‘open’, open)(__file__).read().replace(‘\r\n’, ‘\n’), __file__, ‘exec’))” install –record /tmp/pip-VDXsGm-record/install-record.txt –single-version-externally-managed –compile” failed with error code 1 in /private/tmp/pip-build-UX3Es9/lxml</p>
-<p>由此导致 安装 lxml 失败，所以安装 scrapy 失败，各种悲伤。 其实这是由于mac os 中缺少 c变异所需的include 头文件导致的，查看： cd /usr/目录下是否缺少 include 文件夹，如果没有，我们可以通过以下命令安装：</p>
+          <p>安装软件的时候可能出现缺少头文件而导致的安装失败，笔者就尝试过，在安装 pip install Scrapy 的时候，就出现过：</p>
+<p>Command “&#x2F;usr&#x2F;bin&#x2F;python -c “import setuptools, tokenize;__file__&#x3D;’&#x2F;private&#x2F;tmp&#x2F;pip-build-UX3Es9&#x2F;lxml&#x2F;setup.py’;exec(compile(getattr(tokenize, ‘open’, open)(__file__).read().replace(‘\r\n’, ‘\n’), __file__, ‘exec’))” install –record &#x2F;tmp&#x2F;pip-VDXsGm-record&#x2F;install-record.txt –single-version-externally-managed –compile” failed with error code 1 in &#x2F;private&#x2F;tmp&#x2F;pip-build-UX3Es9&#x2F;lxml</p>
+<p>由此导致 安装 lxml 失败，所以安装 scrapy 失败，各种悲伤。 其实这是由于mac os 中缺少 c变异所需的include 头文件导致的，查看： cd &#x2F;usr&#x2F;目录下是否缺少 include 文件夹，如果没有，我们可以通过以下命令安装：</p>
 <p>xcode-select –install</p>
 <p>执行这条命令后，会出现GUI界面安装程序哦，一直 下一步 下一步 就好，记得，必须在有网络的情况下能安装哦。</p>
 
@@ -807,37 +807,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>server {<br>    listen 80;<br>    server_name abc.com;<br>    rewrite / $scheme://www.$host$request_uri permanent; ## Forcibly prepend a www<br>}</p>
-<p>server {<br>    listen       80;<br>    server_name  <a href="http://www.abc.com" target="_blank" rel="noopener">www.abc.com</a>;<br>    set  $DOC_ROOT d:/abc.com/shop;<br>    root $DOC_ROOT;<br>    location / {<br>        index index.html index.php; ## Allow a static html file to be shown first<br>        try_files $uri $uri/ @handler; ## If missing pass the URI to Magento’s front handler<br>        expires 30d; ## Assume all files are cachable<br>    }</p>
+          <p>server {<br>    listen 80;<br>    server_name abc.com;<br>    rewrite &#x2F; $scheme:&#x2F;&#x2F;www.$host$request_uri permanent; ## Forcibly prepend a www<br>}</p>
+<p>server {<br>    listen       80;<br>    server_name  <a target="_blank" rel="noopener" href="http://www.abc.com/">www.abc.com</a>;<br>    set  $DOC_ROOT d:&#x2F;abc.com&#x2F;shop;<br>    root $DOC_ROOT;<br>    location &#x2F; {<br>        index index.html index.php; ## Allow a static html file to be shown first<br>        try_files $uri $uri&#x2F; @handler; ## If missing pass the URI to Magento’s front handler<br>        expires 30d; ## Assume all files are cachable<br>    }</p>
 <pre><code>## These locations would be hidden by .htaccess normally
-location ^~ /app/                { deny all; }
-location ^~ /includes/           { deny all; }
-location ^~ /lib/                { deny all; }
-location ^~ /media/downloadable/ { deny all; }
-location ^~ /pkginfo/            { deny all; }
-location ^~ /report/config.xml   { deny all; }
-location ^~ /var/                { deny all; }
+location ^~ /app/                &#123; deny all; &#125;
+location ^~ /includes/           &#123; deny all; &#125;
+location ^~ /lib/                &#123; deny all; &#125;
+location ^~ /media/downloadable/ &#123; deny all; &#125;
+location ^~ /pkginfo/            &#123; deny all; &#125;
+location ^~ /report/config.xml   &#123; deny all; &#125;
+location ^~ /var/                &#123; deny all; &#125;
 
-location /var/export/ { ## Allow admins only to view export folder
+location /var/export/ &#123; ## Allow admins only to view export folder
     auth_basic           &quot;Restricted&quot;; ## Message shown in login window
     auth\_basic\_user_file htpasswd; ## See /etc/nginx/htpassword
     autoindex            on;
-}
+&#125;
 
-location  /. { ## Disable .htaccess and other hidden files
+location  /. &#123; ## Disable .htaccess and other hidden files
     return 404;
-}
+&#125;
 
-location @handler { ## Magento uses a common front handler
+location @handler &#123; ## Magento uses a common front handler
     rewrite / /index.php;
-}
+&#125;
 
-location ~ .php/ { ## Forward paths like /js/index.php/x.js to relevant handler
+location ~ .php/ &#123; ## Forward paths like /js/index.php/x.js to relevant handler
     rewrite ^(.*.php)/ $1 last;
-}
+&#125;
 
- location ~ .php$ { ## Execute PHP scripts
-    if (!-e $request\_filename) { rewrite / /index.php last; } ## Catch 404s that try\_files miss
+ location ~ .php$ &#123; ## Execute PHP scripts
+    if (!-e $request\_filename) &#123; rewrite / /index.php last; &#125; ## Catch 404s that try\_files miss
 
     expires        off; ## Do not cache dynamic content
     fastcgi_pass   127.0.0.1:9000;
@@ -845,14 +845,15 @@ location ~ .php/ { ## Forward paths like /js/index.php/x.js to relevant handler
     fastcgi\_param  MAGE\_RUN_CODE default; ## Store code is defined in administration &gt; Configuration &gt; Manage Stores
     fastcgi\_param  MAGE\_RUN_TYPE store;
     include        fastcgi\_params; ## See /etc/nginx/fastcgi\_params
-}
+&#125;
 
-location ~* ^.+\\.(jpg|jpeg|gif|css|png|js|ico)$ {
+location ~* ^.+\\.(jpg|jpeg|gif|css|png|js|ico)$ &#123;
     root  $DOC_ROOT;
     index  index.php;
     access_log off;
     expires 30d;
-</code></pre><p>   }</p>
+</code></pre>
+<p>   }</p>
 
       
     </div>
@@ -919,7 +920,7 @@ location ~* ^.+\\.(jpg|jpeg|gif|css|png|js|ico)$ {
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>如果大家是使用一键环境（如：lnmp.org)，有时候防火墙会被设置成正式环境一样，当你是用作测试服务器的时候，这样就很不方便了。 因此，在这里记录一下linux下防火墙的配置： 地址是：/etc/sysconfig/iptables</p>
+          <p>如果大家是使用一键环境（如：lnmp.org)，有时候防火墙会被设置成正式环境一样，当你是用作测试服务器的时候，这样就很不方便了。 因此，在这里记录一下linux下防火墙的配置： 地址是：&#x2F;etc&#x2F;sysconfig&#x2F;iptables</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2014/05/12/linux%E4%B8%8B%E9%98%B2%E7%81%AB%E5%A2%99%E7%9A%84%E9%85%8D%E7%BD%AE/#more" rel="contents">
@@ -1064,7 +1065,7 @@ location ~* ^.+\\.(jpg|jpeg|gif|css|png|js|ico)$ {
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -214,22 +214,25 @@
 
       
         <p>当你自行编译 php 的时候，很多时候需要指定启动 php-fpm 的 group 和 user ，这个时候，我们就需要自行创建用户和组了，这里做个记录，怎么在linux下创建用户组和用户。 我需要的事创建用户组: <code>www</code>， 用户: <code>www</code></p>
-<a id="more"></a>
+<span id="more"></span>
+
 <h3 id="一、创建用户组"><a href="#一、创建用户组" class="headerlink" title="一、创建用户组"></a>一、创建用户组</h3><p>sudo groupadd www</p>
-<p>www  就是你需要创建的用户组的名称，我这里是直接创建组名为 www 的用户组  </p>
-<h3 id="二、创建用户"><a href="#二、创建用户" class="headerlink" title="二、创建用户"></a>二、创建用户</h3><p>sudo useradd www -m -s /sbin/nologin -d /home/www -g www</p>
+<p>www  就是你需要创建的用户组的名称，我这里是直接创建组名为 www 的用户组  </p>
+<h3 id="二、创建用户"><a href="#二、创建用户" class="headerlink" title="二、创建用户"></a>二、创建用户</h3><p>sudo useradd www -m -s &#x2F;sbin&#x2F;nologin -d &#x2F;home&#x2F;www -g www</p>
 <p>参数解释：</p>
-<p>-s /sbin/nologin 设置不能该用户登陆。假如需要用户可以登陆，可以设置： -s /bin/bash www<br>-d 设置用户主目录<br>-g 用户组<br>-m 创建用户目录</p>
+<p>-s &#x2F;sbin&#x2F;nologin 设置不能该用户登陆。假如需要用户可以登陆，可以设置： -s &#x2F;bin&#x2F;bash www<br>-d 设置用户主目录<br>-g 用户组<br>-m 创建用户目录</p>
 <h3 id="三、useradd-参数详解"><a href="#三、useradd-参数详解" class="headerlink" title="三、useradd 参数详解"></a>三、useradd 参数详解</h3><p>执行：</p>
 <p>useradd –help</p>
 <p>Usage: useradd [options] LOGIN<br>       useradd -D<br>       useradd -D [options]</p>
-<p>Options:<br>  -b, –base-dir BASE_DIR       base directory for the home directory of the<br>                                new account<br>  -c, –comment COMMENT         GECOS field of the new account<br>  -d, –home-dir HOME_DIR       home directory of the new account<br>  -D, –defaults                print or change default useradd configuration<br>  -e, –expiredate EXPIRE_DATE  expiration date of the new account<br>  -f, –inactive INACTIVE       password inactivity period of the new account<br>  -g, –gid GROUP               name or ID of the primary group of the new<br>                                account<br>  -G, –groups GROUPS           list of supplementary groups of the new<br>                                account<br>  -h, –help                    display this help message and exit<br>  -k, –skel SKEL_DIR           use this alternative skeleton directory<br>  -K, –key KEY=VALUE           override /etc/login.defs defaults<br>  -l, –no-log-init             do not add the user to the lastlog and<br>                                faillog databases<br>  -m, –create-home             create the user’s home directory<br>  -M, –no-create-home          do not create the user’s home directory<br>  -N, –no-user-group           do not create a group with the same name as<br>                                the user<br>  -o, –non-unique              allow to create users with duplicate<br>                                (non-unique) UID<br>  -p, –password PASSWORD       encrypted password of the new account<br>  -r, –system                  create a system account<br>  -R, –root CHROOT_DIR         directory to chroot into<br>  -s, –shell SHELL             login shell of the new account<br>  -u, –uid UID                 user ID of the new account<br>  -U, –user-group              create a group with the same name as the user<br>  -Z, –selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping<br>      –extrausers              Use the extra users database</p>
+<p>Options:<br>  -b, –base-dir BASE_DIR       base directory for the home directory of the<br>                                new account<br>  -c, –comment COMMENT         GECOS field of the new account<br>  -d, –home-dir HOME_DIR       home directory of the new account<br>  -D, –defaults                print or change default useradd configuration<br>  -e, –expiredate EXPIRE_DATE  expiration date of the new account<br>  -f, –inactive INACTIVE       password inactivity period of the new account<br>  -g, –gid GROUP               name or ID of the primary group of the new<br>                                account<br>  -G, –groups GROUPS           list of supplementary groups of the new<br>                                account<br>  -h, –help                    display this help message and exit<br>  -k, –skel SKEL_DIR           use this alternative skeleton directory<br>  -K, –key KEY&#x3D;VALUE           override &#x2F;etc&#x2F;login.defs defaults<br>  -l, –no-log-init             do not add the user to the lastlog and<br>                                faillog databases<br>  -m, –create-home             create the user’s home directory<br>  -M, –no-create-home          do not create the user’s home directory<br>  -N, –no-user-group           do not create a group with the same name as<br>                                the user<br>  -o, –non-unique              allow to create users with duplicate<br>                                (non-unique) UID<br>  -p, –password PASSWORD       encrypted password of the new account<br>  -r, –system                  create a system account<br>  -R, –root CHROOT_DIR         directory to chroot into<br>  -s, –shell SHELL             login shell of the new account<br>  -u, –uid UID                 user ID of the new account<br>  -U, –user-group              create a group with the same name as the user<br>  -Z, –selinux-user SEUSER     use a specific SEUSER for the SELinux user mapping<br>      –extrausers              Use the extra users database</p>
+<p> </p>
 <h3 id="四、为用户设置密码"><a href="#四、为用户设置密码" class="headerlink" title="四、为用户设置密码"></a>四、为用户设置密码</h3><p>sudo passwd www</p>
-<h3 id="五、更改用户属性"><a href="#五、更改用户属性" class="headerlink" title="五、更改用户属性"></a>五、更改用户属性</h3><p>sudo usermod -s /bin/bash username</p>
-<p>使用 usermod 来更改用户的属性，这里的命令代表：使用户可以登陆。  </p>
+<p> </p>
+<h3 id="五、更改用户属性"><a href="#五、更改用户属性" class="headerlink" title="五、更改用户属性"></a>五、更改用户属性</h3><p>sudo usermod -s &#x2F;bin&#x2F;bash username</p>
+<p>使用 usermod 来更改用户的属性，这里的命令代表：使用户可以登陆。  </p>
 <h3 id="六、如何删除用户组或者用户"><a href="#六、如何删除用户组或者用户" class="headerlink" title="六、如何删除用户组或者用户"></a>六、如何删除用户组或者用户</h3><p>#删除用户组<br>sudo groupdel www</p>
 <p>#删除用户<br>sudo userdel www</p>
-<p>ps: 需要先删除用户，再删除用户组。   Have fun!</p>
+<p>ps: 需要先删除用户，再删除用户组。   Have fun!</p>
 
     </div>
 
@@ -377,7 +380,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

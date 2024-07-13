@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"goodspb.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Laravel 中有很多是否好用的工具，真是得laravel者得天下（哈哈哈~~）。 小弟用的版本是 laravel 5.1 。 以下亲自测试可用：   一、安装 node.js 因为elixir 建基础于 gulp ，而 gulp 是nodejs的产物，所以需要到http:&#x2F;&#x2F;nodejs.org 中安装，请点击图片中“ install “即可  然后在终端 或者 cmd 中运行 node -v">
+  <meta name="description" content="Laravel 中有很多是否好用的工具，真是得laravel者得天下（哈哈哈~~）。 小弟用的版本是 laravel 5.1 。 以下亲自测试可用：   一、安装 node.js 因为elixir 建基础于 gulp ，而 gulp 是nodejs的产物，所以需要到http:&#x2F;&#x2F;nodejs.org 中安装，请点击图片中“ install “即可  然后在终端 或者 cmd 中运行 node -v">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Laravel 如何方便的使用SASS ( 使用elixir &amp;&amp; gulp )">
 <meta property="og:url" content="https://goodspb.com/2015/07/05/Laravel-%E5%A6%82%E4%BD%95%E6%96%B9%E4%BE%BF%E7%9A%84%E4%BD%BF%E7%94%A8SASS-(-%E4%BD%BF%E7%94%A8elixir-&&-gulp-)/index.html">
 <meta property="og:site_name" content="Malvin&#39;s Blog">
-<meta property="og:description" content="Laravel 中有很多是否好用的工具，真是得laravel者得天下（哈哈哈~~）。 小弟用的版本是 laravel 5.1 。 以下亲自测试可用：   一、安装 node.js 因为elixir 建基础于 gulp ，而 gulp 是nodejs的产物，所以需要到http:&#x2F;&#x2F;nodejs.org 中安装，请点击图片中“ install “即可  然后在终端 或者 cmd 中运行 node -v">
+<meta property="og:description" content="Laravel 中有很多是否好用的工具，真是得laravel者得天下（哈哈哈~~）。 小弟用的版本是 laravel 5.1 。 以下亲自测试可用：   一、安装 node.js 因为elixir 建基础于 gulp ，而 gulp 是nodejs的产物，所以需要到http:&#x2F;&#x2F;nodejs.org 中安装，请点击图片中“ install “即可  然后在终端 或者 cmd 中运行 node -v">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://goodspb.com/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705165422.png">
 <meta property="og:image" content="https://goodspb.com/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705165606.png">
@@ -221,28 +221,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Laravel 中有很多是否好用的工具，真是得laravel者得天下（哈哈哈~~）。 小弟用的版本是 laravel 5.1 。 以下亲自测试可用：   <strong>一、安装 node.js</strong> 因为elixir 建基础于 gulp ，而 gulp 是nodejs的产物，所以需要到<a href="http://nodejs.org" target="_blank" rel="noopener">http://nodejs.org</a> 中安装，请点击图片中“ install “即可 <a href="/images/2015/07/QQ图片20150705165422.png"><img src="/images/2015/07/QQ图片20150705165422.png" alt="QQ图片20150705165422"></a> 然后在终端 或者 cmd 中运行 node -v 确实是否安装成功，成功如下图： <a href="/images/2015/07/QQ图片20150705165606.png"><img src="/images/2015/07/QQ图片20150705165606.png" alt="QQ图片20150705165606"></a>     <strong>二、安装 gulp </strong> 终端 或者 cmd 中运行 npm install –global gulp ，成功的时候得到如下结果： <a href="/images/2015/07/QQ截图20150705195329.png"><img src="/images/2015/07/QQ截图20150705195329.png" alt="QQ截图20150705195329"></a>   <strong>三、安装 laravel5 目录下的 node.js 配置依赖，配置文件为：package.json ，大家可以打开看看；</strong> 1、首先进入 laravel 所在目录 2、然后运行：npm install PS: 如果在mac下，可能还要：</p>
-<p>sudo chown -R $USER ~/.npm<br>sudo chown -R $USER /usr/local</p>
-<p>3、结果如下： <a href="/images/2015/07/QQ截图20150705195741.png"><img src="/images/2015/07/QQ截图20150705195741.png" alt="QQ截图20150705195741"></a>   （第一行的错误不知道是啥，知道的告知一声）</p>
-<a id="more"></a>
-<h4 id="PS：-由于国内网络的G-，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！"><a href="#PS：-由于国内网络的G-，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！" class="headerlink" title="PS： 由于国内网络的G**，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！"></a>PS： 由于国内网络的G**，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！</h4><p>  <strong>四、配置 laravel 根目录下的 gulpfile.js 的配置文件，laravel 5.1的时候是这样的：</strong></p>
+        <p>Laravel 中有很多是否好用的工具，真是得laravel者得天下（哈哈哈~~）。 小弟用的版本是 laravel 5.1 。 以下亲自测试可用：   <strong>一、安装 node.js</strong> 因为elixir 建基础于 gulp ，而 gulp 是nodejs的产物，所以需要到<a target="_blank" rel="noopener" href="http://nodejs.org/">http://nodejs.org</a> 中安装，请点击图片中“ install “即可 <a href="/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705165422.png"><img src="/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705165422.png" alt="QQ图片20150705165422"></a> 然后在终端 或者 cmd 中运行 node -v 确实是否安装成功，成功如下图： <a href="/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705165606.png"><img src="/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705165606.png" alt="QQ图片20150705165606"></a>     **二、安装 gulp ** 终端 或者 cmd 中运行 npm install –global gulp ，成功的时候得到如下结果： <a href="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705195329.png"><img src="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705195329.png" alt="QQ截图20150705195329"></a>   <strong>三、安装 laravel5 目录下的 node.js 配置依赖，配置文件为：package.json ，大家可以打开看看；</strong> 1、首先进入 laravel 所在目录 2、然后运行：npm install PS: 如果在mac下，可能还要：</p>
+<p>sudo chown -R $USER ~&#x2F;.npm<br>sudo chown -R $USER &#x2F;usr&#x2F;local</p>
+<p>3、结果如下： <a href="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705195741.png"><img src="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705195741.png" alt="QQ截图20150705195741"></a>   （第一行的错误不知道是啥，知道的告知一声）</p>
+<span id="more"></span>
+
+<h4 id="PS：-由于国内网络的G-，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！"><a href="#PS：-由于国内网络的G-，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！" class="headerlink" title="PS： 由于国内网络的G**，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！"></a>PS： 由于国内网络的G**，所以，一定要要VPN才能连上npm的源哦，否则会一直报错！谨记！！！！！</h4><p>  <strong>四、配置 laravel 根目录下的 gulpfile.js 的配置文件，laravel 5.1的时候是这样的：</strong></p>
 <p>elixir(function(mix) {<br>    mix.sass(‘app.scss’);<br>});</p>
 <p>可以改成这样：</p>
-<p>elixir(function(mix) {<br>    mix.sass(‘app.scss’)<br>        .version(‘css/app.css’) //添加自动更替版本号，保存在 public/build/css/app-xxxxx.css<br>    ;<br>});</p>
-<p>  <strong>五、编写sass文件，随便在 resources/assets/sass/app.sass 中编写：</strong></p>
-<p>//@import “node_modules/bootstrap-sass/assets/stylesheets/bootstrap”;<br>//此为bootstrap的css文件，按照项目需求选择是否包含</p>
+<p>elixir(function(mix) {<br>    mix.sass(‘app.scss’)<br>        .version(‘css&#x2F;app.css’) &#x2F;&#x2F;添加自动更替版本号，保存在 public&#x2F;build&#x2F;css&#x2F;app-xxxxx.css<br>    ;<br>});</p>
+<p>  <strong>五、编写sass文件，随便在 resources&#x2F;assets&#x2F;sass&#x2F;app.sass 中编写：</strong></p>
+<p>&#x2F;&#x2F;@import “node_modules&#x2F;bootstrap-sass&#x2F;assets&#x2F;stylesheets&#x2F;bootstrap”;<br>&#x2F;&#x2F;此为bootstrap的css文件，按照项目需求选择是否包含</p>
 <p>.header {</p>
 <p>  .left{<br>    color: #fff;<br>  }</p>
 <p>  .middle{<br>    color: #fff;<br>  }</p>
 <p>  .right{</p>
 <p>  }<br>}</p>
-<p>  <strong>六、然后 在终端或者 cmd 中运行 : gulp ，结果如下：</strong> <a href="/images/2015/07/QQ截图20150705201437.png"><img src="/images/2015/07/QQ截图20150705201437.png" alt="QQ截图20150705201437"></a> 大功告成，现在 pulice/css/中已经 存在由app.sass编译已成的 app.css，可以直接引用到项目当中 然后，因为我们刚刚在  <strong>gulpfile.js</strong> 文件当中加入 了 version 进行版本控制，因此，会在 public/build/css/中出现以下文件： <a href="/images/2015/07/QQ截图20150705201730.png"><img src="/images/2015/07/QQ截图20150705201730.png" alt="QQ截图20150705201730"></a>     <strong>七、在项目模板中引用 CSS 文件：</strong> 1、方法一，直接引用非版本控制的css ： pulice/css/app.css</p>
-<link rel="stylesheet" href="/public/css/app.css">
+<p>  <strong>六、然后 在终端或者 cmd 中运行 : gulp ，结果如下：</strong> <a href="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705201437.png"><img src="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705201437.png" alt="QQ截图20150705201437"></a> 大功告成，现在 pulice&#x2F;css&#x2F;中已经 存在由app.sass编译已成的 app.css，可以直接引用到项目当中 然后，因为我们刚刚在  <strong>gulpfile.js</strong> 文件当中加入 了 version 进行版本控制，因此，会在 public&#x2F;build&#x2F;css&#x2F;中出现以下文件： <a href="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705201730.png"><img src="/images/2015/07/QQ%E6%88%AA%E5%9B%BE20150705201730.png" alt="QQ截图20150705201730"></a>     <strong>七、在项目模板中引用 CSS 文件：</strong> 1、方法一，直接引用非版本控制的css ： pulice&#x2F;css&#x2F;app.css</p>
+<link rel="stylesheet" href="/public/css/app.css" >
 
 <p>2、方法二，引用版本控制的css ,</p>
-<link rel="stylesheet" href="{ { elixir('css/app.css')  }}">
+<link rel="stylesheet" href="{ { elixir('css/app.css')  }}" >
 
-<p>elixir 是全局helper中的方法，用于获得版本控制的css，读出public/build/rev-manifest.json 文件中从而引入文件   <strong>八、监控sass 文件</strong> 那是否每一次我们更改app.sass文件都要手动在终端中输入 gulp 来编译呢？非也非也 我们可以运行 gulp watch , 运行结果如下： <a href="/images/2015/07/QQ图片20150705202952.png"><img src="/images/2015/07/QQ图片20150705202952.png" alt="QQ图片20150705202952"></a> 这样，每次我们对ass.sass进行更改，gulp 就会对其自动进行编译了，我们刷新页面也能马上看到效果哦！！   laravel 5.1 兼职就是神器！</p>
+<p>elixir 是全局helper中的方法，用于获得版本控制的css，读出public&#x2F;build&#x2F;rev-manifest.json 文件中从而引入文件   <strong>八、监控sass 文件</strong> 那是否每一次我们更改app.sass文件都要手动在终端中输入 gulp 来编译呢？非也非也 我们可以运行 gulp watch , 运行结果如下： <a href="/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705202952.png"><img src="/images/2015/07/QQ%E5%9B%BE%E7%89%8720150705202952.png" alt="QQ图片20150705202952"></a> 这样，每次我们对ass.sass进行更改，gulp 就会对其自动进行编译了，我们刷新页面也能马上看到效果哦！！   laravel 5.1 兼职就是神器！</p>
 
     </div>
 
@@ -390,7 +391,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

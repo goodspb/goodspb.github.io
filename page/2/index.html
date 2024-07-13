@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -286,8 +286,8 @@
 
       
           <h3 id="Git-服务器的可选范围"><a href="#Git-服务器的可选范围" class="headerlink" title="Git 服务器的可选范围?"></a>Git 服务器的可选范围?</h3><ul>
-<li><a href="https://gitlab.com/" target="_blank" rel="noopener">Gitlab</a></li>
-<li><a href="https://github.com/gogits/gogs" target="_blank" rel="noopener">gogs</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitlab.com/">Gitlab</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gogits/gogs">gogs</a></li>
 </ul>
 <p>假如现在让我重新选，那其实轻量级的gogs其实也不差，因为Gitlab实在实在实在太”重“了。</p>
           <!--noindex-->
@@ -364,13 +364,15 @@
 
       
           <p>废话少讲，直接上命令：</p>
-<pre><code>rsync -av --delete --exclude-from=./deployignore -e &quot;ssh -o &apos;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&apos;&quot; /data/wwwroot/abc  root@192.168.0.100:/home/wwwroot/abc
-</code></pre><p>解析：</p>
+<pre><code>rsync -av --delete --exclude-from=./deployignore -e &quot;ssh -o &#39;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&#39;&quot; /data/wwwroot/abc  root@192.168.0.100:/home/wwwroot/abc
+</code></pre>
+<p>解析：</p>
 <pre><code> --delete --exclude-from=xxxx                                                           //忽略该文件内容中的列表
- -e &quot;ssh -o &apos;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&apos;&quot;      //使用 ssh 做通讯，并使用 sock5 代理，代理地址：127.0.0.1 ，端口：1080
+ -e &quot;ssh -o &#39;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&#39;&quot;      //使用 ssh 做通讯，并使用 sock5 代理，代理地址：127.0.0.1 ，端口：1080
 /data/wwwroot/abc                                                                             //本地地址
 root@192.168.0.100:/home/wwwroot/abc                                        //远端地址
-</code></pre><p>have fun!</p>
+</code></pre>
+<p>have fun!</p>
 
       
     </div>
@@ -594,14 +596,15 @@ root@192.168.0.100:/home/wwwroot/abc                                        //�
 
       
           <p>今天手贱使用 homebrew 执行了一下 <code>brew upgrade</code> 来更新安装过的程序。 更新完之后，执行 <code>php -m</code> ，发现出现报错：</p>
-<pre><code>PHP Warning:  PHP Startup: Unable to load dynamic library &apos;/usr/local/opt/php56-mcrypt/mcrypt.so&apos; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
+<pre><code>PHP Warning:  PHP Startup: Unable to load dynamic library &#39;/usr/local/opt/php56-mcrypt/mcrypt.so&#39; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
   Referenced from: /usr/local/opt/php56-mcrypt/mcrypt.so
   Reason: image not found in Unknown on line 0
 
-Warning: PHP Startup: Unable to load dynamic library &apos;/usr/local/opt/php56-mcrypt/mcrypt.so&apos; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
+Warning: PHP Startup: Unable to load dynamic library &#39;/usr/local/opt/php56-mcrypt/mcrypt.so&#39; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
   Referenced from: /usr/local/opt/php56-mcrypt/mcrypt.so
   Reason: image not found in Unknown on line 0
-</code></pre><p>看了一下，目录<code>/usr/local/opt/php56-mcrypt/mcrypt.so</code>下面是有东西的，主要的问题是: <code>Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib</code> 详细可见 <a href="http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib" target="_blank" rel="noopener">http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib</a></p>
+</code></pre>
+<p>看了一下，目录<code>/usr/local/opt/php56-mcrypt/mcrypt.so</code>下面是有东西的，主要的问题是: <code>Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib</code> 详细可见 <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib">http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib</a></p>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p><code>brew install libtool</code></p>
 
       
@@ -763,20 +766,22 @@ Please select a continent, ocean, &quot;coord&quot;, or &quot;TZ&quot;.
 <blockquote>
 <p>Python2 版本的</p>
 </blockquote>
-<pre><code>def check_contain_chinese(check_str):
-for ch in check_str.decode(&apos;utf-8&apos;):
-    if u&apos;\u4e00&apos; &lt;= ch &lt;= u&apos;\u9fff&apos;:
-        return True
-return False
-</code></pre><blockquote>
+<pre><code>    def check_contain_chinese(check_str):
+    for ch in check_str.decode(&#39;utf-8&#39;):
+        if u&#39;\u4e00&#39; &lt;= ch &lt;= u&#39;\u9fff&#39;:
+            return True
+    return False
+</code></pre>
+<blockquote>
 <p>Python3 版本的</p>
 </blockquote>
-<pre><code>def check_contain_chinese(check_str):
-for ch in check_str:
-    if u&apos;\u4e00&apos; &lt;= ch &lt;= u&apos;\u9fff&apos;:
-        return True
-return False
+<pre><code>    def check_contain_chinese(check_str):
+    for ch in check_str:
+        if u&#39;\u4e00&#39; &lt;= ch &lt;= u&#39;\u9fff&#39;:
+            return True
+    return False
 </code></pre>
+
       
     </div>
 
@@ -842,7 +847,7 @@ return False
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><p>苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： <a href="https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler" target="_blank" rel="noopener">https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler</a> 重点在于整个验证的描述： <a href="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png"><img src="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png" alt="97C40134-873E-4A9E-9986-F4A66EF1E2C0"></a> 由此可见，服务端需要接受来自客户端的参数有以下 <code>6</code> 个：</p>
+          <h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><p>苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： <a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler">https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&#x2F;instm&#x2F;GKLocalPlayer&#x2F;generateIdentityVerificationSignatureWithCompletionHandler</a> 重点在于整个验证的描述： <a href="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png"><img src="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png" alt="97C40134-873E-4A9E-9986-F4A66EF1E2C0"></a> 由此可见，服务端需要接受来自客户端的参数有以下 <code>6</code> 个：</p>
 <ol>
 <li>publicKeyURL</li>
 <li>playerID</li>
@@ -1069,7 +1074,7 @@ return False
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

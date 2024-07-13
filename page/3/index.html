@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -215,7 +215,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="库地址"><a href="#库地址" class="headerlink" title="库地址"></a>库地址</h3><p><a href="https://github.com/SimpleSoftwareIO/simple-qrcode" target="_blank" rel="noopener">SimpleSoftwareIO/simple-qrcode</a></p>
+          <h3 id="库地址"><a href="#库地址" class="headerlink" title="库地址"></a>库地址</h3><p><a target="_blank" rel="noopener" href="https://github.com/SimpleSoftwareIO/simple-qrcode">SimpleSoftwareIO&#x2F;simple-qrcode</a></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/07/28/%E5%9C%A8-Laravel-54-%E4%B8%AD%E7%94%9F%E6%88%90%E4%BA%8C%E7%BB%B4%E7%A0%81/#more" rel="contents">
@@ -289,34 +289,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <pre><code>class A {
+          <pre><code>class A &#123;
        const STATUS_SUCCESS = 1;
              const STATUS_FAILED = 0;
-}
-</code></pre><p>要怎样才能判断类中是否包含 A::STATUS_SUCCESS 这个变量呢？ 理论上来讲，我们可以使用PHP的 <code>Reflection</code> 机制，如：</p>
-<pre><code>$ref = new ReflectionClass(&apos;A&apos;);
+&#125;
+</code></pre>
+<p>要怎样才能判断类中是否包含 A::STATUS_SUCCESS 这个变量呢？ 理论上来讲，我们可以使用PHP的 <code>Reflection</code> 机制，如：</p>
+<pre><code>$ref = new ReflectionClass(&#39;A&#39;);
 print_r($ref-&gt;getConstants());
 
 /* 输出：
 
 Array
 (
-    [&apos;STATUS_SUCCESS&apos;] =&gt; 1
-    [&apos;STATUS_FAILED&apos;] =&gt; 0
+    [&#39;STATUS_SUCCESS&#39;] =&gt; 1
+    [&#39;STATUS_FAILED&#39;] =&gt; 0
 )
 
 */
-</code></pre><p>但是， 使用 反射 的话，对性能影响可是很大的，如果只需要简单的判断是否存在某某名称的常量，可以这样操作：</p>
-<pre><code>class A {
+</code></pre>
+<p>但是， 使用 反射 的话，对性能影响可是很大的，如果只需要简单的判断是否存在某某名称的常量，可以这样操作：</p>
+<pre><code>class A &#123;
        const STATUS_SUCCESS = 1;
              const STATUS_FAILED = 0;
 
              public function checkStatus()
-             {
+             &#123;
                      return defined(&quot;self::STATUS_SUCCESS&quot;);
-             }
+             &#125;
 
-}
+&#125;
 
 var_dump((new A)-&gt;checkStatus());
 
@@ -325,7 +327,8 @@ var_dump((new A)-&gt;checkStatus());
     bool(true)
 
  */
-</code></pre><p>通过这种方法，能简单的判断是否出现是否存在常量。 have fun!</p>
+</code></pre>
+<p>通过这种方法，能简单的判断是否出现是否存在常量。 have fun!</p>
 
       
     </div>
@@ -392,7 +395,7 @@ var_dump((new A)-&gt;checkStatus());
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="一、何为递归"><a href="#一、何为递归" class="headerlink" title="一、何为递归"></a>一、何为递归</h3><p>递归（recursion）在编程当中相当常见，当你的栈底看不见的时候，递归的作用显而易见。详解请参见<a href="https://zh.wikipedia.org/zh/%E9%80%92%E5%BD%92" target="_blank" rel="noopener">维基百科</a></p>
+          <h3 id="一、何为递归"><a href="#一、何为递归" class="headerlink" title="一、何为递归"></a>一、何为递归</h3><p>递归（recursion）在编程当中相当常见，当你的栈底看不见的时候，递归的作用显而易见。详解请参见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh/%E9%80%92%E5%BD%92">维基百科</a></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/05/31/PHP-%E5%AF%B9%E9%80%92%E5%BD%92%E7%9A%84%E4%BC%98%E5%8C%96/#more" rel="contents">
@@ -470,7 +473,7 @@ var_dump((new A)-&gt;checkStatus());
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>ThinkPHP 中有一个叫行为扩展的功能模块，其实就是设计模式当中的“监听者模式” （当然啦，这个还是处于十分粗糙的），对于网站的初始化等处理还是挺有用处的。 当中有一个行为标签叫 app_begin ，见名知意，就是在整个应用最开始时执行的操作。 但是有个缺憾，在 app_begin 这个标签的 Behavior 无法执行 session 的 增删改查 ，到底为何呢？ 可以查看 TP 的源码： ThinkPHP/Library/Think/</p>
+          <p>ThinkPHP 中有一个叫行为扩展的功能模块，其实就是设计模式当中的“监听者模式” （当然啦，这个还是处于十分粗糙的），对于网站的初始化等处理还是挺有用处的。 当中有一个行为标签叫 app_begin ，见名知意，就是在整个应用最开始时执行的操作。 但是有个缺憾，在 app_begin 这个标签的 Behavior 无法执行 session 的 增删改查 ，到底为何呢？ 可以查看 TP 的源码： ThinkPHP&#x2F;Library&#x2F;Think&#x2F;</p>
 <p><strong>App.class.php</strong></p>
           <!--noindex-->
             <div class="post-button">
@@ -627,7 +630,7 @@ var_dump((new A)-&gt;checkStatus());
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>根据 <a href="http://www.stats.gov.cn/tjsj/tjbz/xzqhdm/201504/t20150415_712722.html" target="_blank" rel="noopener">国家统计局</a> 来制作的最新中国省市区数据库 原始数据不包含 所属关系 ，即数据库中没有 PID 相互的关联。 以下是原始数据（没有PID）： <a href="/images/2016/01/region-origin-no-pid.sql_.zip">region-origin-no-pid.sql</a>     再提供一个经由我从省份的编号计算出来的，含所属关系(PID)的数据库，算法如下：</p>
+          <p>根据 <a target="_blank" rel="noopener" href="http://www.stats.gov.cn/tjsj/tjbz/xzqhdm/201504/t20150415_712722.html">国家统计局</a> 来制作的最新中国省市区数据库 原始数据不包含 所属关系 ，即数据库中没有 PID 相互的关联。 以下是原始数据（没有PID）： <a href="/images/2016/01/region-origin-no-pid.sql_.zip">region-origin-no-pid.sql</a>     再提供一个经由我从省份的编号计算出来的，含所属关系(PID)的数据库，算法如下：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2016/01/05/%E4%B8%AD%E5%9B%BD%E7%9C%81%E5%B8%82%E5%8C%BA-%E6%9C%80%E6%96%B0%E7%89%88-%E6%95%B0%E6%8D%AE%E5%BA%93-SQL%E6%96%87%E4%BB%B6-%E6%88%AA%E6%AD%A2-201504/#more" rel="contents">
@@ -702,14 +705,14 @@ var_dump((new A)-&gt;checkStatus());
 
       
           <p>中国网络差真系不是说笑的，用 npm 下载3个包竟然要半小时，受不了。因此我们需要为 npm 更换一个淘宝源。 理论上，加入你要安装 koa ，可以这样做：</p>
-<p>npm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a> install koa</p>
-<p>然后，秒速的就下载完，但是你会发现，每次 install 都要加 –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a> ，这么麻烦？来一个一劳永逸的方法，直接安装淘宝的 cnpm ，运行：</p>
-<p>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p>
+<p>npm –registry&#x3D;<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a> install koa</p>
+<p>然后，秒速的就下载完，但是你会发现，每次 install 都要加 –registry&#x3D;<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a> ，这么麻烦？来一个一劳永逸的方法，直接安装淘宝的 cnpm ，运行：</p>
+<p>npm install -g cnpm –registry&#x3D;<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
 <p>等到完成后，你就可以使用 cnpm 来代替 npm 命令来下载了，如上例 koa , 可以使用如下命令安装：</p>
 <p>cnpm install koa</p>
 <p>这样，其实命令就等价于：</p>
-<p>npm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a> install koa</p>
-<p>  至此，OVER，大家可以去看看淘宝源网址：<a href="http://npm.taobao.org/" target="_blank" rel="noopener">http://npm.taobao.org/</a></p>
+<p>npm –registry&#x3D;<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a> install koa</p>
+<p>  至此，OVER，大家可以去看看淘宝源网址：<a target="_blank" rel="noopener" href="http://npm.taobao.org/">http://npm.taobao.org/</a></p>
 
       
     </div>
@@ -777,7 +780,7 @@ var_dump((new A)-&gt;checkStatus());
 
       
           <p>使用Laravel 5.1 的时候，免不了和 gulp 打交道，因此，系统当中必须要有好的 nodejs 啊，原生的 npm 和 nodejs 是在太旧了，因此想用 homebrew 来管理 nodejs ，因此，我们需要先删除原来的 node ，步骤如下：</p>
-<p>sudo npm uninstall npm -g<br>sudo rm -rf /usr/local/lib/node /usr/local/lib/node_modules /var/db/receipts/org.nodejs.*<br>sudo rm -rf /usr/local/include/node /Users/$USER/.npm<br>sudo rm /usr/local/bin/node<br>sudo rm /usr/local/share/man/man1/node.1<br>sudo rm /usr/local/lib/dtrace/node.d<br>sudo rm /usr/local/share/systemtap/tapset/node.stp<br>sudo rm /usr/local/share/doc/node/gdbinit</p>
+<p>sudo npm uninstall npm -g<br>sudo rm -rf &#x2F;usr&#x2F;local&#x2F;lib&#x2F;node &#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules &#x2F;var&#x2F;db&#x2F;receipts&#x2F;org.nodejs.*<br>sudo rm -rf &#x2F;usr&#x2F;local&#x2F;include&#x2F;node &#x2F;Users&#x2F;$USER&#x2F;.npm<br>sudo rm &#x2F;usr&#x2F;local&#x2F;bin&#x2F;node<br>sudo rm &#x2F;usr&#x2F;local&#x2F;share&#x2F;man&#x2F;man1&#x2F;node.1<br>sudo rm &#x2F;usr&#x2F;local&#x2F;lib&#x2F;dtrace&#x2F;node.d<br>sudo rm &#x2F;usr&#x2F;local&#x2F;share&#x2F;systemtap&#x2F;tapset&#x2F;node.stp<br>sudo rm &#x2F;usr&#x2F;local&#x2F;share&#x2F;doc&#x2F;node&#x2F;gdbinit</p>
 <p>然后，就可以通过 homebrew 来安装 nodejs 了：</p>
 <p>brew install node<br>node -v</p>
 
@@ -850,7 +853,7 @@ var_dump((new A)-&gt;checkStatus());
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>由于实际的开发当中，可能存在多个项目的情况，如果是在本地自行搭建的坏境的话，就很有可能需要使用多个域名了，当然，也可以是 localhost / localhost:81 / localhost:82 这样来访问多个项目。其实，有更加便捷的方法（忽略自行修改/etc/hosts，这种哈，会改死人的），使用一个管理dns的工具： dnsmasq。 1 、安装dnsmasq 已经默认各位Mac下有homebrew , 安装：</p>
+          <p>由于实际的开发当中，可能存在多个项目的情况，如果是在本地自行搭建的坏境的话，就很有可能需要使用多个域名了，当然，也可以是 localhost &#x2F; localhost:81 &#x2F; localhost:82 这样来访问多个项目。其实，有更加便捷的方法（忽略自行修改&#x2F;etc&#x2F;hosts，这种哈，会改死人的），使用一个管理dns的工具： dnsmasq。 1 、安装dnsmasq 已经默认各位Mac下有homebrew , 安装：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2015/11/23/Mac-%E4%B8%8B%E5%AE%89%E8%A3%85-dnsmasq-%E6%9D%A5%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
@@ -925,6 +928,7 @@ var_dump((new A)-&gt;checkStatus());
 
       
           <p>最近不知为何，忽然爱上了 Python ， 无论做小爬虫，还是简单的文件处理都是很尝心悦目的。 不过，还是不太熟悉python的包和函数，来来来，让我 markdown 一下： 文件头，请导入：</p>
+<p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2015/10/11/Python3-%E7%9A%84%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/#more" rel="contents">
@@ -1069,7 +1073,7 @@ var_dump((new A)-&gt;checkStatus());
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

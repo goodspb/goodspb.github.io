@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -213,57 +213,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="一、何为递归"><a href="#一、何为递归" class="headerlink" title="一、何为递归"></a>一、何为递归</h3><p>递归（recursion）在编程当中相当常见，当你的栈底看不见的时候，递归的作用显而易见。详解请参见<a href="https://zh.wikipedia.org/zh/%E9%80%92%E5%BD%92" target="_blank" rel="noopener">维基百科</a></p>
-<a id="more"></a>
+        <h3 id="一、何为递归"><a href="#一、何为递归" class="headerlink" title="一、何为递归"></a>一、何为递归</h3><p>递归（recursion）在编程当中相当常见，当你的栈底看不见的时候，递归的作用显而易见。详解请参见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh/%E9%80%92%E5%BD%92">维基百科</a></p>
+<span id="more"></span>
+
 <h3 id="二、程序中的递归一"><a href="#二、程序中的递归一" class="headerlink" title="二、程序中的递归一"></a>二、程序中的递归一</h3><pre><code>function recursion($n)
-{
-    if ($n == 0) {
+&#123;
+    if ($n == 0) &#123;
         return $n;
-    }
+    &#125;
     $n--;
     return recursion($n) + $n;
-}
+&#125;
 
 echo recursion(11) ;
-</code></pre><p>这样，就可以通过递归求出11+10+…..+2+1的结果。 但是，当你将 $n 改成 300 <code>recursion(300) ;</code> 的时候，这个时候会出现：</p>
-<pre><code>Fatal error: Maximum function nesting level of &apos;256&apos; reached, aborting!
-</code></pre><p>这是为什么呢？因为函数的调用需要运用 <code>栈</code> 来储存 函数的信息，当函数中包含 <code>return recursion($n) + $n;</code> 的时候，计算这个结果就必须保存上一次函数的调用才能进行 * 操作，因此 ，当 $n = 300 的时候，<code>栈</code> 就必须保存 300次函数调用的信息了，因为 <code>栈</code> 空间有限，从而导致程序出错。 那上面显示的错误，是 PHP 的保护机制。</p>
+</code></pre>
+<p>这样，就可以通过递归求出11+10+…..+2+1的结果。 但是，当你将 $n 改成 300 <code>recursion(300) ;</code> 的时候，这个时候会出现：</p>
+<pre><code>Fatal error: Maximum function nesting level of &#39;256&#39; reached, aborting!
+</code></pre>
+<p>这是为什么呢？因为函数的调用需要运用 <code>栈</code> 来储存 函数的信息，当函数中包含 <code>return recursion($n) + $n;</code> 的时候，计算这个结果就必须保存上一次函数的调用才能进行 * 操作，因此 ，当 $n &#x3D; 300 的时候，<code>栈</code> 就必须保存 300次函数调用的信息了，因为 <code>栈</code> 空间有限，从而导致程序出错。 那上面显示的错误，是 PHP 的保护机制。</p>
 <h3 id="三、程序中的递归二-—-尾递归"><a href="#三、程序中的递归二-—-尾递归" class="headerlink" title="三、程序中的递归二 — 尾递归"></a>三、程序中的递归二 — 尾递归</h3><p>将上述代码改成：</p>
 <pre><code>function recursion2($n, $result = 0)
-{
-    if ($n == 0) {
+&#123;
+    if ($n == 0) &#123;
         return $result;
-    }
+    &#125;
     $n--;
     $result += $n;
     return recursion2($n, $result);
-}
+&#125;
 
 echo recursion2(253);
-</code></pre><p>同样运行 ， 当 $n = 255 以上， 就会出现 <code>Fatal error: Maximum function nesting level of &#39;256&#39; reached, aborting!</code> 错误。 但是，上面的这样写法，属于尾递归函数，将结果集传到函数的中，C/C++ ， java 等语言对 尾递归 有优化， 不过，PHP/Python 不对尾递归做优化，所以，问题同样存在。</p>
+</code></pre>
+<p>同样运行 ， 当 $n &#x3D; 255 以上， 就会出现 <code>Fatal error: Maximum function nesting level of &#39;256&#39; reached, aborting!</code> 错误。 但是，上面的这样写法，属于尾递归函数，将结果集传到函数的中，C&#x2F;C++ ， java 等语言对 尾递归 有优化， 不过，PHP&#x2F;Python 不对尾递归做优化，所以，问题同样存在。</p>
 <h3 id="四、回避递归中的层级限制"><a href="#四、回避递归中的层级限制" class="headerlink" title="四、回避递归中的层级限制"></a>四、回避递归中的层级限制</h3><p>接下来，请看如下方法：</p>
 <pre><code>function recursion3($n)
-{
+&#123;
     function interRecursion($n, $result = 0)
-    {
-        if ($n == 0) {
+    &#123;
+        if ($n == 0) &#123;
             return $result;
-        }
+        &#125;
         $n--;
         $result += $n;
-        return function () use ($n, $result) {
+        return function () use ($n, $result) &#123;
             return interRecursion($n, $result);
-        };
-    }
-    $result = call_user_func(&apos;interRecursion&apos;, $n);
-    while (is_callable($result)) {
+        &#125;;
+    &#125;
+    $result = call_user_func(&#39;interRecursion&#39;, $n);
+    while (is_callable($result)) &#123;
         $result = $result();
-    }
+    &#125;
     return $result;
-}
+&#125;
 
 echo recursion3(1255);
-</code></pre><p>以上方法，就不会产生 层数的限制。和 Ptyhon 当中的 装饰器 一样。如果对 call_user_func 这样的函数不太了解的话，可以先看看 php.net 。</p>
+</code></pre>
+<p>以上方法，就不会产生 层数的限制。和 Ptyhon 当中的 装饰器 一样。如果对 call_user_func 这样的函数不太了解的话，可以先看看 php.net 。</p>
 <h3 id="五、测试文件下载"><a href="#五、测试文件下载" class="headerlink" title="五、测试文件下载"></a>五、测试文件下载</h3><p><a href="/images/2016/05/recursion.php_.zip">recursion.php</a></p>
 
     </div>
@@ -412,7 +417,7 @@ echo recursion3(1255);
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

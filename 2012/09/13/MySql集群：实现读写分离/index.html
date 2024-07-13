@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -222,20 +222,121 @@
 <li>database proxy</li>
 <li>database集群</li>
 </ul>
-<a id="more"></a>
-<p>在本次实战中，应用程序client基于c3p0连接后端的database proxy。database proxy负责管理client实际访问database的路由策略，采用开源框架amoeba。database集群采用mysql的master-slave的replication方案。整个环境的结构图如下所示： <a href="/images/2012/09/0_1278126303lqtC.jpg"><img src="/images/2012/09/0_1278126303lqtC.jpg" alt="0_1278126303lqtC"></a> 实战步骤与详解 <strong>一.搭建mysql的master-slave环境</strong> 1）分别在host1（10.20.147.110）和host2（10.20.147.111）上安装mysql（5.0.45），具体安装方法可见官方文档 2）配置master 首先编辑/etc/my.cnf，添加以下配置： log-bin=mysql-bin #slave会基于此log-bin来做replication server-id=1 #master的标示 binlog-do-db = amoeba_study #用于master-slave的具体数据库 然后添加专门用于replication的用户： mysql&gt; GRANT REPLICATION SLAVE ON <em>.</em> TO <a href="mailto:repl@10.20.147.111" target="_blank" rel="noopener">repl@10.20.147.111</a> IDENTIFIED BY ‘111111’; 重启mysql，使得配置生效： /etc/init.d/mysqld restart 最后查看master状态： <a href="/images/2012/09/0_1278127160u2x8.jpg"><img src="/images/2012/09/0_1278127160u2x8.jpg" alt="0_1278127160u2x8"></a> 3）配置slave 首先编辑/etc/my.cnf，添加以下配置： server-id=2 #slave的标示 配置生效后，配置与master的连接： mysql&gt; CHANGE MASTER TO -&gt; MASTER_HOST=’10.20.147.110’, -&gt; MASTER_USER=’repl’, -&gt; MASTER_PASSWORD=’111111’, -&gt; MASTER_LOG_FILE=’mysql-bin.000003’, -&gt; MASTER_LOG_POS=161261; 其中MASTER_HOST是master机的ip，MASTER_USER和MASTER_PASSWORD就是我们刚才在master上添加的用户，MASTER_LOG_FILE和MASTER_LOG_POS对应与master status里的信息 最后启动slave： mysql&gt; start slave; 4）验证master-slave搭建生效 通过查看slave机的log（/var/log/mysqld.log）： 100703 10:51:42 [Note] Slave I/O thread: connected to master <a href="mailto:&#39;repl@10.20.147.110" target="_blank" rel="noopener">&#39;repl@10.20.147.110</a>:3306’,  replication started in log ‘mysql-bin.000003’ at position 161261 如看到以上信息则证明搭建成功，如果有问题也可通过此log找原因   <strong>二.搭建database proxy</strong> 此次实战中database proxy采用<a href="http://amoeba.sourceforge.net/wordpress/" target="_blank" rel="noopener">amoeba</a> ，它的相关信息可以查阅官方文档，不在此详述 1）安装amoeba 下载amoeba（1.2.0-GA）后解压到本地（D:/openSource/amoeba-mysql-1.2.0-GA），即完成安装 2）配置amoeba 先配置proxy连接和与各后端mysql服务器连接信息（D:/openSource/amoeba-mysql-1.2.0-GA/conf/amoeba.xml）：</p>
-<server><br>    &lt;!-- proxy server绑定的端口 –&gt;<br>    <property name="port">8066</property><br><br>    &lt;!-- proxy server绑定的IP –&gt;<br>    &lt;!--<br>    <property name="ipAddress">127.0.0.1</property><br>     --&gt;<br>    &lt;!-- proxy server net IO Read thread size –&gt;<br>    <property name="readThreadPoolSize">20</property><br><br>    &lt;!-- proxy server client process thread size –&gt;<br>    <property name="clientSideThreadPoolSize">30</property><br><br>    &lt;!-- mysql server data packet process thread size –&gt;<br>    <property name="serverSideThreadPoolSize">30</property><br><br>    &lt;!-- socket Send and receive BufferSize(unit:K)  –&gt;<br>    <property name="netBufferSize">128</property><br><br>    &lt;!-- Enable/disable TCP_NODELAY (disable/enable Nagle’s algorithm). –&gt;<br>    <property name="tcpNoDelay">true</property><br><br>    &lt;!-- 对外验证的用户名 –&gt;<br>    <property name="user">root</property><br><br>    &lt;!-- 对外验证的密码 –&gt;<br>    <property name="password">root</property><br></server>
+<span id="more"></span>
+
+<p>在本次实战中，应用程序client基于c3p0连接后端的database proxy。database proxy负责管理client实际访问database的路由策略，采用开源框架amoeba。database集群采用mysql的master-slave的replication方案。整个环境的结构图如下所示： <a href="/images/2012/09/0_1278126303lqtC.jpg"><img src="/images/2012/09/0_1278126303lqtC.jpg" alt="0_1278126303lqtC"></a> 实战步骤与详解 <strong>一.搭建mysql的master-slave环境</strong> 1）分别在host1（10.20.147.110）和host2（10.20.147.111）上安装mysql（5.0.45），具体安装方法可见官方文档 2）配置master 首先编辑&#x2F;etc&#x2F;my.cnf，添加以下配置： log-bin&#x3D;mysql-bin #slave会基于此log-bin来做replication server-id&#x3D;1 #master的标示 binlog-do-db &#x3D; amoeba_study #用于master-slave的具体数据库 然后添加专门用于replication的用户： mysql&gt; GRANT REPLICATION SLAVE ON <em>.</em> TO <a href="mailto:&#114;&#101;&#112;&#108;&#64;&#49;&#x30;&#46;&#x32;&#x30;&#x2e;&#x31;&#52;&#55;&#x2e;&#49;&#x31;&#49;">&#114;&#101;&#112;&#108;&#64;&#49;&#x30;&#46;&#x32;&#x30;&#x2e;&#x31;&#52;&#55;&#x2e;&#49;&#x31;&#49;</a> IDENTIFIED BY ‘111111’; 重启mysql，使得配置生效： &#x2F;etc&#x2F;init.d&#x2F;mysqld restart 最后查看master状态： <a href="/images/2012/09/0_1278127160u2x8.jpg"><img src="/images/2012/09/0_1278127160u2x8.jpg" alt="0_1278127160u2x8"></a> 3）配置slave 首先编辑&#x2F;etc&#x2F;my.cnf，添加以下配置： server-id&#x3D;2 #slave的标示 配置生效后，配置与master的连接： mysql&gt; CHANGE MASTER TO -&gt; MASTER_HOST&#x3D;’10.20.147.110’, -&gt; MASTER_USER&#x3D;’repl’, -&gt; MASTER_PASSWORD&#x3D;’111111’, -&gt; MASTER_LOG_FILE&#x3D;’mysql-bin.000003’, -&gt; MASTER_LOG_POS&#x3D;161261; 其中MASTER_HOST是master机的ip，MASTER_USER和MASTER_PASSWORD就是我们刚才在master上添加的用户，MASTER_LOG_FILE和MASTER_LOG_POS对应与master status里的信息 最后启动slave： mysql&gt; start slave; 4）验证master-slave搭建生效 通过查看slave机的log（&#x2F;var&#x2F;log&#x2F;mysqld.log）： 100703 10:51:42 [Note] Slave I&#x2F;O thread: connected to master ‘<a href="mailto:&#114;&#101;&#x70;&#108;&#x40;&#x31;&#48;&#46;&#x32;&#x30;&#46;&#49;&#x34;&#x37;&#46;&#x31;&#49;&#48;">&#114;&#101;&#x70;&#108;&#x40;&#x31;&#48;&#46;&#x32;&#x30;&#46;&#49;&#x34;&#x37;&#46;&#x31;&#49;&#48;</a>:3306’,  replication started in log ‘mysql-bin.000003’ at position 161261 如看到以上信息则证明搭建成功，如果有问题也可通过此log找原因   <strong>二.搭建database proxy</strong> 此次实战中database proxy采用<a target="_blank" rel="noopener" href="http://amoeba.sourceforge.net/wordpress/">amoeba</a> ，它的相关信息可以查阅官方文档，不在此详述 1）安装amoeba 下载amoeba（1.2.0-GA）后解压到本地（D:&#x2F;openSource&#x2F;amoeba-mysql-1.2.0-GA），即完成安装 2）配置amoeba 先配置proxy连接和与各后端mysql服务器连接信息（D:&#x2F;openSource&#x2F;amoeba-mysql-1.2.0-GA&#x2F;conf&#x2F;amoeba.xml）：</p>
+<server>
+    <!\-\- proxy server绑定的端口 -->
+    <property name="port">8066</property>
+    
+<pre><code>&lt;!\-\- proxy server绑定的IP --&gt;
+&lt;!\-\- 
+&lt;property name=&quot;ipAddress&quot;&gt;127.0.0.1&lt;/property&gt;
+ \-\-&gt;
+&lt;!\-\- proxy server net IO Read thread size --&gt;
+&lt;property name=&quot;readThreadPoolSize&quot;&gt;20&lt;/property&gt;
+
+&lt;!\-\- proxy server client process thread size --&gt;
+&lt;property name=&quot;clientSideThreadPoolSize&quot;&gt;30&lt;/property&gt;
+
+&lt;!\-\- mysql server data packet process thread size --&gt;
+&lt;property name=&quot;serverSideThreadPoolSize&quot;&gt;30&lt;/property&gt;
+
+&lt;!\-\- socket Send and receive BufferSize(unit:K)  --&gt;
+&lt;property name=&quot;netBufferSize&quot;&gt;128&lt;/property&gt;
+
+&lt;!\-\- Enable/disable TCP_NODELAY (disable/enable Nagle&#39;s algorithm). --&gt;
+&lt;property name=&quot;tcpNoDelay&quot;&gt;true&lt;/property&gt;
+
+&lt;!\-\- 对外验证的用户名 --&gt;
+&lt;property name=&quot;user&quot;&gt;root&lt;/property&gt;
+
+&lt;!\-\- 对外验证的密码 --&gt;
+&lt;property name=&quot;password&quot;&gt;root&lt;/property&gt;
+</code></pre>
+</server>
 
 <p>以上是proxy提供给client的连接配置：</p>
-<dbserverlist><br>    <dbserver name="server1"><br>        &lt;!-- PoolableObjectFactory实现类 –&gt;<br>        <factoryconfig class="com.meidusa.amoeba.mysql.net.MysqlServerConnectionFactory"><br>            <property name="manager">defaultManager</property><br><br>            &lt;!-- 真实mysql数据库端口 –&gt;<br>            <property name="port">3306</property><br><br>            &lt;!-- 真实mysql数据库IP –&gt;<br>            <property name="ipAddress">10.20.147.110</property><br>            <property name="schema">amoeba_study</property><br><br>            &lt;!-- 用于登陆mysql的用户名 –&gt;<br>            <property name="user">root</property><br><br>            &lt;!-- 用于登陆mysql的密码 –&gt;<br>            <property name="password"></property><br><br>        </factoryconfig><br><br>        &lt;!-- ObjectPool实现类 –&gt;<br>        <poolconfig class="com.meidusa.amoeba.net.poolable.PoolableObjectPool"><br>            <property name="maxActive">200</property><br>            <property name="maxIdle">200</property><br>            <property name="minIdle">10</property><br>            <property name="minEvictableIdleTimeMillis">600000</property><br>            <property name="timeBetweenEvictionRunsMillis">600000</property><br>            <property name="testOnBorrow">true</property><br>            <property name="testWhileIdle">true</property><br>        </poolconfig><br>    </dbserver><br>    <dbserver name="server2"><br><br>        &lt;!-- PoolableObjectFactory实现类 –&gt;<br>        <factoryconfig class="com.meidusa.amoeba.mysql.net.MysqlServerConnectionFactory"><br>            <property name="manager">defaultManager</property><br><br>            &lt;!-- 真实mysql数据库端口 –&gt;<br>            <property name="port">3306</property><br><br>            &lt;!-- 真实mysql数据库IP –&gt;<br>            <property name="ipAddress">10.20.147.111</property><br>            <property name="schema">amoeba_study</property><br><br>            &lt;!-- 用于登陆mysql的用户名 –&gt;<br>            <property name="user">root</property><br><br>            &lt;!-- 用于登陆mysql的密码 –&gt;<br>            <property name="password"></property><br><br>        </factoryconfig><br><br>        &lt;!-- ObjectPool实现类 –&gt;<br>        <poolconfig class="com.meidusa.amoeba.net.poolable.PoolableObjectPool"><br>            <property name="maxActive">200</property><br>            <property name="maxIdle">200</property><br>            <property name="minIdle">10</property><br>            <property name="minEvictableIdleTimeMillis">600000</property><br>            <property name="timeBetweenEvictionRunsMillis">600000</property><br>            <property name="testOnBorrow">true</property><br>            <property name="testWhileIdle">true</property><br>        </poolconfig><br>    </dbserver><br></dbserverlist>
+<dbServerList>
+    <dbServer name="server1">			
+        <!\-\- PoolableObjectFactory实现类 -->
+        <factoryConfig class="com.meidusa.amoeba.mysql.net.MysqlServerConnectionFactory">
+            <property name="manager">defaultManager</property>
+            
+<pre><code>        &lt;!\-\- 真实mysql数据库端口 --&gt;
+        &lt;property name=&quot;port&quot;&gt;3306&lt;/property&gt;
+        
+        &lt;!\-\- 真实mysql数据库IP --&gt;
+        &lt;property name=&quot;ipAddress&quot;&gt;10.20.147.110&lt;/property&gt;
+        &lt;property name=&quot;schema&quot;&gt;amoeba_study&lt;/property&gt;
+        
+        &lt;!\-\- 用于登陆mysql的用户名 --&gt;
+        &lt;property name=&quot;user&quot;&gt;root&lt;/property&gt;
+        
+        &lt;!\-\- 用于登陆mysql的密码 --&gt;
+        &lt;property name=&quot;password&quot;&gt;&lt;/property&gt;
+        
+    &lt;/factoryConfig&gt;
+    
+    &lt;!\-\- ObjectPool实现类 --&gt;
+    &lt;poolConfig class=&quot;com.meidusa.amoeba.net.poolable.PoolableObjectPool&quot;&gt;
+        &lt;property name=&quot;maxActive&quot;&gt;200&lt;/property&gt;
+        &lt;property name=&quot;maxIdle&quot;&gt;200&lt;/property&gt;
+        &lt;property name=&quot;minIdle&quot;&gt;10&lt;/property&gt;
+        &lt;property name=&quot;minEvictableIdleTimeMillis&quot;&gt;600000&lt;/property&gt;
+        &lt;property name=&quot;timeBetweenEvictionRunsMillis&quot;&gt;600000&lt;/property&gt;
+        &lt;property name=&quot;testOnBorrow&quot;&gt;true&lt;/property&gt;
+        &lt;property name=&quot;testWhileIdle&quot;&gt;true&lt;/property&gt;
+    &lt;/poolConfig&gt;
+&lt;/dbServer&gt;
+&lt;dbServer name=&quot;server2&quot;&gt;
+    
+    &lt;!\-\- PoolableObjectFactory实现类 --&gt;
+    &lt;factoryConfig class=&quot;com.meidusa.amoeba.mysql.net.MysqlServerConnectionFactory&quot;&gt;
+        &lt;property name=&quot;manager&quot;&gt;defaultManager&lt;/property&gt;
+        
+        &lt;!\-\- 真实mysql数据库端口 --&gt;
+        &lt;property name=&quot;port&quot;&gt;3306&lt;/property&gt;
+        
+        &lt;!\-\- 真实mysql数据库IP --&gt;
+        &lt;property name=&quot;ipAddress&quot;&gt;10.20.147.111&lt;/property&gt;
+        &lt;property name=&quot;schema&quot;&gt;amoeba_study&lt;/property&gt;
+        
+        &lt;!\-\- 用于登陆mysql的用户名 --&gt;
+        &lt;property name=&quot;user&quot;&gt;root&lt;/property&gt;
+        
+        &lt;!\-\- 用于登陆mysql的密码 --&gt;
+        &lt;property name=&quot;password&quot;&gt;&lt;/property&gt;
+        
+    &lt;/factoryConfig&gt;
+    
+    &lt;!\-\- ObjectPool实现类 --&gt;
+    &lt;poolConfig class=&quot;com.meidusa.amoeba.net.poolable.PoolableObjectPool&quot;&gt;
+        &lt;property name=&quot;maxActive&quot;&gt;200&lt;/property&gt;
+        &lt;property name=&quot;maxIdle&quot;&gt;200&lt;/property&gt;
+        &lt;property name=&quot;minIdle&quot;&gt;10&lt;/property&gt;
+        &lt;property name=&quot;minEvictableIdleTimeMillis&quot;&gt;600000&lt;/property&gt;
+        &lt;property name=&quot;timeBetweenEvictionRunsMillis&quot;&gt;600000&lt;/property&gt;
+        &lt;property name=&quot;testOnBorrow&quot;&gt;true&lt;/property&gt;
+        &lt;property name=&quot;testWhileIdle&quot;&gt;true&lt;/property&gt;
+    &lt;/poolConfig&gt;
+&lt;/dbServer&gt;		
+</code></pre>
+</dbServerList>
 
 <p>以上是proxy与后端各mysql数据库服务器配置信息，具体配置见注释很明白了 最后配置读写分离策略：</p>
-<queryrouter class="com.meidusa.amoeba.mysql.parser.MysqlQueryRouter"><br>    <property name="LRUMapSize">1500</property><br>    <property name="defaultPool">server1</property><br>    <property name="writePool">server1</property><br>    <property name="readPool">server2</property><br>    <property name="needParse">true</property><br></queryrouter>
+<queryRouter class="com.meidusa.amoeba.mysql.parser.MysqlQueryRouter">
+    <property name="LRUMapSize">1500</property>
+    <property name="defaultPool">server1</property>
+    <property name="writePool">server1</property>
+    <property name="readPool">server2</property>
+    <property name="needParse">true</property>
+</queryRouter>
 
-<p>从以上配置不然发现，写操作路由到server1（master），读操作路由到server2（slave） 3）启动amoeba 在命令行里运行D:/openSource/amoeba-mysql-1.2.0-GA/amoeba.bat即可： log4j:WARN log4j config load completed from file:D:/openSource/amoeba-mysql-1.2.0-GA/conf/log4j.xml log4j:WARN ip access config load completed from file:D:/openSource/amoeba-mysql-1.2.0-GA/conf/access_list.conf 2010-07-03 09:55:33,821 INFO  net.ServerableConnectionManager - Server listening on 0.0.0.0/0.0.0.0:8066. <strong>三.client端调用与测试</strong> 1）编写client调用程序 具体程序细节就不详述了，只是一个最普通的基于mysql driver的jdbc的数据库操作程序 2）配置数据库连接 本client基于c3p0，具体数据源配置如下：</p>
-<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"><br>    <property name="driverClass" value="com.mysql.jdbc.Driver"><br>    <property name="jdbcUrl" value="jdbc:mysql://localhost:8066/amoeba_study"><br>    <property name="user" value="root"><br>    <property name="password" value="root"><br>    <property name="minPoolSize" value="1"><br>    <property name="maxPoolSize" value="1"><br>    <property name="maxIdleTime" value="1800"><br>    <property name="acquireIncrement" value="1"><br>    <property name="maxStatements" value="0"><br>    <property name="initialPoolSize" value="1"><br>    <property name="idleConnectionTestPeriod" value="1800"><br>    <property name="acquireRetryAttempts" value="6"><br>    <property name="acquireRetryDelay" value="1000"><br>    <property name="breakAfterAcquireFailure" value="false"><br>    <property name="testConnectionOnCheckout" value="true"><br>    <property name="testConnectionOnCheckin" value="false"><br></property></property></property></property></property></property></property></property></property></property></property></property></property></property></property></property></bean>
-
-<p>值得注意是，client端只需连到proxy，与实际的数据库没有任何关系，因此jdbcUrl、user、password配置都对应于amoeba暴露出来的配置信息 3）调用与测试 首先插入一条数据：insert into zone_by_id(id,name) values(20003,’name_20003’) 通过查看master机上的日志/var/lib/mysql/mysql_log.log： 100703 11:58:42       1 Query       set names latin1 1 Query       SET NAMES latin1 1 Query       SET character_set_results = NULL 1 Query       SHOW VARIABLES 1 Query       SHOW COLLATION 1 Query       SET autocommit=1 1 Query       SET sql_mode=’STRICT_TRANS_TABLES’ 1 Query       SHOW VARIABLES LIKE ‘tx_isolation’ 1 Query       SHOW FULL TABLES FROM `amoeba_study` LIKE ‘PROBABLYNOT’ 1 Prepare     [1] insert into zone_by_id(id,name) values(?,?) 1 Prepare     [2] insert into zone_by_id(id,name) values(?,?) 1 Execute     [2] insert into zone_by_id(id,name) values(20003,’name_20003’) 得知写操作发生在master机上 通过查看slave机上的日志/var/lib/mysql/mysql_log.log： 100703 11:58:42       2 Query       insert into zone_by_id(id,name) values(20003,’name_20003’) 得知slave同步执行了这条语句 然后查一条数据：select t.name from zone_by_id t where t.id = 20003 通过查看slave机上的日志/var/lib/mysql/mysql_log.log： 100703 12:02:00      33 Query       set names latin1 33 Prepare     [1] select t.name from zone_by_id t where t.id = ? 33 Prepare     [2] select t.name from zone_by_id t where t.id = ? 33 Execute     [2] select t.name from zone_by_id t where t.id = 20003 得知读操作发生在slave机上 并且通过查看slave机上的日志/var/lib/mysql/mysql_log.log发现这条语句没在master上执行   通过以上验证得知简单的master-slave搭建和实战得以生效。   摘自原文：<a href="http://blog.csdn.net/cutesource/article/details/5710645" target="_blank" rel="noopener">http://blog.csdn.net/cutesource/article/details/5710645</a></p>
+<p>从以上配置不然发现，写操作路由到server1（master），读操作路由到server2（slave） 3）启动amoeba 在命令行里运行D:&#x2F;openSource&#x2F;amoeba-mysql-1.2.0-GA&#x2F;amoeba.bat即可： log4j:WARN log4j config load completed from file:D:&#x2F;openSource&#x2F;amoeba-mysql-1.2.0-GA&#x2F;conf&#x2F;log4j.xml log4j:WARN ip access config load completed from file:D:&#x2F;openSource&#x2F;amoeba-mysql-1.2.0-GA&#x2F;conf&#x2F;access_list.conf 2010-07-03 09:55:33,821 INFO  net.ServerableConnectionManager - Server listening on 0.0.0.0&#x2F;0.0.0.0:8066. <strong>三.client端调用与测试</strong> 1）编写client调用程序 具体程序细节就不详述了，只是一个最普通的基于mysql driver的jdbc的数据库操作程序 2）配置数据库连接 本client基于c3p0，具体数据源配置如下：</p>
+<p><bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    destroy-method="close"><br>    <property name="driverClass" value="com.mysql.jdbc.Driver" /><br>    <property name="jdbcUrl" value="jdbc:mysql://localhost:8066/amoeba_study" /><br>    <property name="user" value="root" /><br>    <property name="password" value="root" /><br>    <property name="minPoolSize" value="1" /><br>    <property name="maxPoolSize" value="1" /><br>    <property name="maxIdleTime" value="1800" /><br>    <property name="acquireIncrement" value="1" /><br>    <property name="maxStatements" value="0" /><br>    <property name="initialPoolSize" value="1" /><br>    <property name="idleConnectionTestPeriod" value="1800" /><br>    <property name="acquireRetryAttempts" value="6" /><br>    <property name="acquireRetryDelay" value="1000" /><br>    <property name="breakAfterAcquireFailure" value="false" /><br>    <property name="testConnectionOnCheckout" value="true" /><br>    <property name="testConnectionOnCheckin" value="false" /><br></bean></p>
+<p>值得注意是，client端只需连到proxy，与实际的数据库没有任何关系，因此jdbcUrl、user、password配置都对应于amoeba暴露出来的配置信息 3）调用与测试 首先插入一条数据：insert into zone_by_id(id,name) values(20003,’name_20003’) 通过查看master机上的日志&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql_log.log： 100703 11:58:42       1 Query       set names latin1 1 Query       SET NAMES latin1 1 Query       SET character_set_results &#x3D; NULL 1 Query       SHOW VARIABLES 1 Query       SHOW COLLATION 1 Query       SET autocommit&#x3D;1 1 Query       SET sql_mode&#x3D;’STRICT_TRANS_TABLES’ 1 Query       SHOW VARIABLES LIKE ‘tx_isolation’ 1 Query       SHOW FULL TABLES FROM `amoeba_study` LIKE ‘PROBABLYNOT’ 1 Prepare     [1] insert into zone_by_id(id,name) values(?,?) 1 Prepare     [2] insert into zone_by_id(id,name) values(?,?) 1 Execute     [2] insert into zone_by_id(id,name) values(20003,’name_20003’) 得知写操作发生在master机上 通过查看slave机上的日志&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql_log.log： 100703 11:58:42       2 Query       insert into zone_by_id(id,name) values(20003,’name_20003’) 得知slave同步执行了这条语句 然后查一条数据：select t.name from zone_by_id t where t.id &#x3D; 20003 通过查看slave机上的日志&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql_log.log： 100703 12:02:00      33 Query       set names latin1 33 Prepare     [1] select t.name from zone_by_id t where t.id &#x3D; ? 33 Prepare     [2] select t.name from zone_by_id t where t.id &#x3D; ? 33 Execute     [2] select t.name from zone_by_id t where t.id &#x3D; 20003 得知读操作发生在slave机上 并且通过查看slave机上的日志&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql_log.log发现这条语句没在master上执行   通过以上验证得知简单的master-slave搭建和实战得以生效。   摘自原文：<a target="_blank" rel="noopener" href="http://blog.csdn.net/cutesource/article/details/5710645">http://blog.csdn.net/cutesource/article/details/5710645</a></p>
 
     </div>
 
@@ -382,7 +483,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

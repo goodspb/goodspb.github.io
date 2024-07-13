@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"goodspb.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="自从使用了 Mac 来做开发环境之后，感觉是回不去了，各种开源的软件都建基于 *inx 系统，例如想玩 Swoole ？嘿嘿，自己收集一下比较有感觉的软件： 一、GUI ：  Sequel Pro : Mysql GUI , 最好用了。 MysqlWorkbench, 真心一般般，太繁琐。 phpMyAdmin: Mysql Web GUI, 请原谅我是一个 PHPer。 phpRedisAdmi">
+  <meta name="description" content="自从使用了 Mac 来做开发环境之后，感觉是回不去了，各种开源的软件都建基于 *inx 系统，例如想玩 Swoole ？嘿嘿，自己收集一下比较有感觉的软件： 一、GUI ：   Sequel Pro : Mysql GUI , 最好用了。   MysqlWorkbench, 真心一般般，太繁琐。  phpMyAdmin: Mysql Web GUI, 请原谅我是一个 PHPer。  phpRedi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac 下开发工具最佳实践">
 <meta property="og:url" content="https://goodspb.com/2015/05/06/Mac-%E4%B8%8B%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
 <meta property="og:site_name" content="Malvin&#39;s Blog">
-<meta property="og:description" content="自从使用了 Mac 来做开发环境之后，感觉是回不去了，各种开源的软件都建基于 *inx 系统，例如想玩 Swoole ？嘿嘿，自己收集一下比较有感觉的软件： 一、GUI ：  Sequel Pro : Mysql GUI , 最好用了。 MysqlWorkbench, 真心一般般，太繁琐。 phpMyAdmin: Mysql Web GUI, 请原谅我是一个 PHPer。 phpRedisAdmi">
+<meta property="og:description" content="自从使用了 Mac 来做开发环境之后，感觉是回不去了，各种开源的软件都建基于 *inx 系统，例如想玩 Swoole ？嘿嘿，自己收集一下比较有感觉的软件： 一、GUI ：   Sequel Pro : Mysql GUI , 最好用了。   MysqlWorkbench, 真心一般般，太繁琐。  phpMyAdmin: Mysql Web GUI, 请原谅我是一个 PHPer。  phpRedi">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-05-06T07:18:12.000Z">
 <meta property="article:modified_time" content="2022-11-19T06:07:10.736Z">
@@ -215,31 +215,37 @@
       
         <p>自从使用了 Mac 来做开发环境之后，感觉是回不去了，各种开源的软件都建基于 *inx 系统，例如想玩 Swoole ？嘿嘿，自己收集一下比较有感觉的软件： 一、GUI ：</p>
 <ol>
-<li>Sequel Pro : Mysql GUI , 最好用了。</li>
-<li>MysqlWorkbench, 真心一般般，太繁琐。</li>
-<li>phpMyAdmin: Mysql Web GUI, 请原谅我是一个 PHPer。</li>
-<li>phpRedisAdmin: Redis Web  GUI , 同上。</li>
+<li><p> Sequel Pro : Mysql GUI , 最好用了。</p>
+</li>
+<li><p> MysqlWorkbench, 真心一般般，太繁琐。</p>
+</li>
+<li><p>phpMyAdmin: Mysql Web GUI, 请原谅我是一个 PHPer。</p>
+</li>
+<li><p>phpRedisAdmin: Redis Web  GUI , 同上。</p>
+</li>
 <li><p>Beanstalk console: Beanstalk Web GUI, 同上。</p>
 </li>
-<li><p>Robomongo:  mongoDB GUI</p>
+<li><p>Robomongo:  mongoDB GUI</p>
 </li>
-<li>SmartGit：Git GUI，超级好用，比sourceTree好用多了，提交树清晰可见</li>
+<li><p>SmartGit：Git GUI，超级好用，比sourceTree好用多了，提交树清晰可见</p>
+</li>
 </ol>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>二、IDE：</p>
 <ol>
 <li>phpstorm： 最好的PHP IDE ，没有之一。</li>
-<li>webstorm with go plugins : 个人觉得用来写 Golang  挺爽的。</li>
+<li>webstorm with go plugins : 个人觉得用来写 Golang  挺爽的。</li>
 <li>Sublime Text 3: 编辑小文件</li>
 <li>Markdown Plus : MD GUI ，使用有点卡，一般般。</li>
-<li>OpenOffice:  MS Office 的替代品。</li>
+<li>OpenOffice:  MS Office 的替代品。</li>
 <li>Xmind: 思维导图</li>
 </ol>
 <p>三、Tool :</p>
 <ol>
 <li>FileZilla : FTP, SFTP 利器</li>
-<li>Item : 终端替代品，不过我还是觉得Mac  自带的挺好用</li>
-<li>Ichm：Mac 下查看 CHM  文件</li>
+<li>Item : 终端替代品，不过我还是觉得Mac  自带的挺好用</li>
+<li>Ichm：Mac 下查看 CHM  文件</li>
 <li>KDiff3 : 文件对比</li>
 </ol>
 <p>四、Entertainment:</p>
@@ -393,7 +399,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

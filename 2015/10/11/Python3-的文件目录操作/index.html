@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -215,7 +215,7 @@
 
       
         <p>最近不知为何，忽然爱上了 Python ， 无论做小爬虫，还是简单的文件处理都是很尝心悦目的。 不过，还是不太熟悉python的包和函数，来来来，让我 markdown 一下： 文件头，请导入：</p>
- <a id="more"></a>
+<p> <span id="more"></span></p>
 <pre><code>import os
 import shutil
 
@@ -245,11 +245,11 @@ def mkdirs(path):
         # 创建目录操作函数
         os.makedirs(path)
         #如果不存在则创建目录
-        print path + u&apos; 创建成功&apos;
+        print path + u&#39; 创建成功&#39;
         return True
     else:
         #如果目录存在则不创建，并提示目录已存在
-        print path + u&apos; 目录已存在&apos;
+        print path + u&#39; 目录已存在&#39;
         return False
 
 #复制文件：
@@ -280,7 +280,7 @@ os.path.exists(&quot;goal&quot;)    #判断目标是否存在
 os.path.isdir(&quot;goal&quot;)     #判断目标是否目录
 os.path.isfile(&quot;goal&quot;)    #判断目标是否文件  
 
-#PS: 若路径中含中文，在windows环境（编码为GBK）下，要将目录编码成GBK，如：dir.encode(&apos;GBK&apos;)
+#PS: 若路径中含中文，在windows环境（编码为GBK）下，要将目录编码成GBK，如：dir.encode(&#39;GBK&#39;)
 
 #遍历目录
 root = os.path.abspath(&quot;.&quot;)   #本获取本目录
@@ -291,7 +291,8 @@ for rootpath, dirs, files in os.walk(root):
      #遍历文件
     for file in files:
                print(file)
-</code></pre><p>欢迎大家补充。</p>
+</code></pre>
+<p>欢迎大家补充。</p>
 
     </div>
 
@@ -443,7 +444,7 @@ for rootpath, dirs, files in os.walk(root):
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

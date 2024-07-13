@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"goodspb.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="今天手贱使用 homebrew 执行了一下 brew upgrade 来更新安装过的程序。 更新完之后，执行 php -m ，发现出现报错： PHP Warning:  PHP Startup: Unable to load dynamic library &amp;apos;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;php56-mcrypt&#x2F;mcrypt.so&amp;apos; - dlopen(&#x2F;usr&#x2F;local&#x2F;o">
+  <meta name="description" content="今天手贱使用 homebrew 执行了一下 brew upgrade 来更新安装过的程序。 更新完之后，执行 php -m ，发现出现报错： PHP Warning:  PHP Startup: Unable to load dynamic library &#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;php56-mcrypt&#x2F;mcrypt.so&#39; - dlopen(&#x2F;usr&#x2F;local&#x2F;opt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Homebrew 更新 php56 和 php56-mcrypt 之后，动态链接 ext-mcrypt 失败的处理。">
 <meta property="og:url" content="https://goodspb.com/2017/04/16/Homebrew-%E6%9B%B4%E6%96%B0-php56-%E5%92%8C-php56-mcrypt-%E4%B9%8B%E5%90%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5-ext-mcrypt-%E5%A4%B1%E8%B4%A5%E7%9A%84%E5%A4%84%E7%90%86%E3%80%82/index.html">
 <meta property="og:site_name" content="Malvin&#39;s Blog">
-<meta property="og:description" content="今天手贱使用 homebrew 执行了一下 brew upgrade 来更新安装过的程序。 更新完之后，执行 php -m ，发现出现报错： PHP Warning:  PHP Startup: Unable to load dynamic library &amp;apos;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;php56-mcrypt&#x2F;mcrypt.so&amp;apos; - dlopen(&#x2F;usr&#x2F;local&#x2F;o">
+<meta property="og:description" content="今天手贱使用 homebrew 执行了一下 brew upgrade 来更新安装过的程序。 更新完之后，执行 php -m ，发现出现报错： PHP Warning:  PHP Startup: Unable to load dynamic library &#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;php56-mcrypt&#x2F;mcrypt.so&#39; - dlopen(&#x2F;usr&#x2F;local&#x2F;opt">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-04-16T07:58:16.000Z">
 <meta property="article:modified_time" content="2022-11-19T06:07:10.735Z">
@@ -221,14 +221,15 @@
 
       
         <p>今天手贱使用 homebrew 执行了一下 <code>brew upgrade</code> 来更新安装过的程序。 更新完之后，执行 <code>php -m</code> ，发现出现报错：</p>
-<pre><code>PHP Warning:  PHP Startup: Unable to load dynamic library &apos;/usr/local/opt/php56-mcrypt/mcrypt.so&apos; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
+<pre><code>PHP Warning:  PHP Startup: Unable to load dynamic library &#39;/usr/local/opt/php56-mcrypt/mcrypt.so&#39; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
   Referenced from: /usr/local/opt/php56-mcrypt/mcrypt.so
   Reason: image not found in Unknown on line 0
 
-Warning: PHP Startup: Unable to load dynamic library &apos;/usr/local/opt/php56-mcrypt/mcrypt.so&apos; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
+Warning: PHP Startup: Unable to load dynamic library &#39;/usr/local/opt/php56-mcrypt/mcrypt.so&#39; - dlopen(/usr/local/opt/php56-mcrypt/mcrypt.so, 9): Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib
   Referenced from: /usr/local/opt/php56-mcrypt/mcrypt.so
   Reason: image not found in Unknown on line 0
-</code></pre><p>看了一下，目录<code>/usr/local/opt/php56-mcrypt/mcrypt.so</code>下面是有东西的，主要的问题是: <code>Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib</code> 详细可见 <a href="http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib" target="_blank" rel="noopener">http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib</a></p>
+</code></pre>
+<p>看了一下，目录<code>/usr/local/opt/php56-mcrypt/mcrypt.so</code>下面是有东西的，主要的问题是: <code>Library not loaded: /usr/local/opt/libtool/lib/libltdl.7.dylib</code> 详细可见 <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib">http://stackoverflow.com/questions/12323252/brew-doctor-dyld-library-not-loaded-error-no-available-formula-for-zlib</a></p>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p><code>brew install libtool</code></p>
 
     </div>
@@ -384,7 +385,7 @@ Warning: PHP Startup: Unable to load dynamic library &apos;/usr/local/opt/php56-
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

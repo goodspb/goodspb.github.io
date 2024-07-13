@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -219,7 +219,9 @@
 <h4 id="1、下载PHP源码"><a href="#1、下载PHP源码" class="headerlink" title="1、下载PHP源码"></a>1、下载PHP源码</h4><p>最简单的，就是直接 clone github 的源码，怎么使用 git 就不做介绍了。</p>
 <pre><code>cd ~
 git clone git@github.com:php/php-src.git 
-</code></pre><a id="more"></a>
+</code></pre>
+<span id="more"></span>
+
 <h4 id="2、目录结构"><a href="#2、目录结构" class="headerlink" title="2、目录结构"></a>2、目录结构</h4><ul>
 <li>ext: 官方扩展目录，包括了绝大多数PHP的函数的定义和实现，如array系列，pdo系列，spl系列等函数的实现，都在这个目录中。</li>
 <li>main: 这里存放的就是PHP最为核心的文件了，主要实现PHP的基本设施，这里和Zend引擎不一样，Zend引擎主要实现语言最核心的语言运行环境。</li>
@@ -230,7 +232,8 @@ git clone git@github.com:php/php-src.git
 </ul>
 <h4 id="3-新建扩展"><a href="#3-新建扩展" class="headerlink" title="3. 新建扩展"></a>3. 新建扩展</h4><p>PHP 官方其实提供了很多有用的工具来帮助你开发扩展，例如：ext 目录下的 <code>./ext_skel</code> , 运行</p>
 <pre><code>./ext_skel
-</code></pre><p>得出说明：</p>
+</code></pre>
+<p>得出说明：</p>
 <pre><code>./ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]]
            [--skel=dir] [--full-xml] [--no-help]
 
@@ -241,11 +244,13 @@ git clone git@github.com:php/php-src.git
   --skel=dir         path to the skeleton directory
   --full-xml         generate xml documentation for a self-contained extension
                      (not yet implemented)
-  --no-help          don&apos;t try to be nice and create comments in the code
+  --no-help          don&#39;t try to be nice and create comments in the code
                      and helper functions to test if the module compiled
-</code></pre><p>我们先忽略其他说明，只关注： <code>--ext &lt;name&gt;</code> 就好，这个命令的是指定扩展名称的意思，那我们就新建一个名为：hello 的扩展作为开始了。</p>
+</code></pre>
+<p>我们先忽略其他说明，只关注： <code>--ext &lt;name&gt;</code> 就好，这个命令的是指定扩展名称的意思，那我们就新建一个名为：hello 的扩展作为开始了。</p>
 <pre><code>./ext_skel --extname=hello
-</code></pre><p>执行完命令之后，得出：</p>
+</code></pre>
+<p>执行完命令之后，得出：</p>
 <pre><code>Creating directory hello
 Creating basic files: config.m4 config.w32 .gitignore hello.c php_hello.h CREDITS EXPERIMENTAL tests/001.phpt hello.php [done].
 
@@ -263,7 +268,8 @@ To use your new extension, you will have to execute the following steps:
 Repeat steps 3-6 until you are satisfied with ext/hello/config.m4 and
 step 6 confirms that your module is compiled into PHP. Then, start writing
 code and repeat the last two steps as often as necessary.
-</code></pre><p>就这样，ext_skel 工具就帮你创建了一个名为 hello 的扩展了，扩展在 ext/hello 文件夹中，我们 <code>cd hello &amp; tree</code> 进去看看文件结构：</p>
+</code></pre>
+<p>就这样，ext_skel 工具就帮你创建了一个名为 hello 的扩展了，扩展在 ext&#x2F;hello 文件夹中，我们 <code>cd hello &amp; tree</code> 进去看看文件结构：</p>
 <pre><code>.
 ├── CREDITS
 ├── EXPERIMENTAL
@@ -276,7 +282,8 @@ code and repeat the last two steps as often as necessary.
     └── 001.phpt
 
 1 directory, 8 files
-</code></pre><p>然后，我们先不管 hello 扩展的内容有什么，先编译先，但是在编译之前，我们需要修改一下 <code>config.m4</code>, 执行命令 <code>vim config.m4</code> 修改：</p>
+</code></pre>
+<p>然后，我们先不管 hello 扩展的内容有什么，先编译先，但是在编译之前，我们需要修改一下 <code>config.m4</code>, 执行命令 <code>vim config.m4</code> 修改：</p>
 <pre><code>dnl If your extension references something external, use with:
 
 dnl PHP_ARG_WITH(say, for say support,
@@ -288,7 +295,8 @@ dnl Otherwise use enable:
 dnl PHP_ARG_ENABLE(say, whether to enable say support,
 dnl Make sure that the comment is aligned:
 dnl [  --enable-say           Enable say support])
-</code></pre><p>为：</p>
+</code></pre>
+<p>为：</p>
 <pre><code>dnl If your extension references something external, use with:
 
 dnl PHP_ARG_WITH(say, for say support,
@@ -300,15 +308,18 @@ dnl Otherwise use enable:
 PHP_ARG_ENABLE(say, whether to enable say support,
 Make sure that the comment is aligned:
 [  --enable-say           Enable say support])
-</code></pre><p>其中 <code>dnl</code> 是 注释的意思，类似于 php 当中的 // 一样。 然后，我们就可以开始执行编译了，输入命令：</p>
+</code></pre>
+<p>其中 <code>dnl</code> 是 注释的意思，类似于 php 当中的 &#x2F;&#x2F; 一样。 然后，我们就可以开始执行编译了，输入命令：</p>
 <pre><code>phpize
 ./configure
 make
 make install
-</code></pre><p>最后，你可以在 目录 <code>mudule</code> 下看到 <code>hello.so</code> 这个文件，这样的话，我们就可以在 <code>php.ini</code> 中添加:</p>
+</code></pre>
+<p>最后，你可以在 目录 <code>mudule</code> 下看到 <code>hello.so</code> 这个文件，这样的话，我们就可以在 <code>php.ini</code> 中添加:</p>
 <pre><code>[hello]
 extension=&quot;hello.so&quot;
-</code></pre><p>再运行 <code>php -m</code> 查看是否存在 hello 扩展了。</p>
+</code></pre>
+<p>再运行 <code>php -m</code> 查看是否存在 hello 扩展了。</p>
 
     </div>
 
@@ -456,7 +467,7 @@ extension=&quot;hello.so&quot;
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

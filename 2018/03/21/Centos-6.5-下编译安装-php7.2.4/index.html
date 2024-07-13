@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -218,27 +218,40 @@
 
       
         <p>公司服务器还是处于centos6.5的版本，因此，最近在改php扩展的时候，还是需要先在 centos6 下测试一下插件，所以搞了个虚拟机安装起 centos , 在编译一下 php7.2 的源码，期间遇到的问题都记录一下。</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <h3 id="一、安装各种依赖："><a href="#一、安装各种依赖：" class="headerlink" title="一、安装各种依赖："></a>一、安装各种依赖：</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel pcre-devel curl-devel </span><br><span class="line">yum -y install libxslt-devel   libmcrypt-devel  gd-devel openssl openssl-devel bison cyrus-sasl-devel git</span><br></pre></td></tr></table></figure>
+
 <h3 id="二、下载源码"><a href="#二、下载源码" class="headerlink" title="二、下载源码"></a>二、下载源码</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://github.com/php/php-src/archive/php-7.2.4.tar.gz</span><br><span class="line">tar -zxf php-7.2.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> php-src-7.2.4</span><br></pre></td></tr></table></figure>
-<h3 id="三、编译参数"><a href="#三、编译参数" class="headerlink" title="三、编译参数"></a>三、编译参数</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./buildconf</span><br><span class="line">./configure --with-openssl --with-mysqli --with-pdo-mysql --with-gd --with-iconv --with-zlib --<span class="built_in">enable</span>-zip --<span class="built_in">enable</span>-inline-optimization --<span class="built_in">enable</span>-xml --<span class="built_in">enable</span>-bcmath --<span class="built_in">enable</span>-shmop --<span class="built_in">enable</span>-sysvsem --<span class="built_in">enable</span>-mbregex --<span class="built_in">enable</span>-mbstring --<span class="built_in">enable</span>-ftp --<span class="built_in">enable</span>-pcntl --<span class="built_in">enable</span>-sockets --with-xmlrpc --<span class="built_in">enable</span>-soap --with-gettext --<span class="built_in">enable</span>-session --with-curl --with-jpeg-dir --with-freetype-dir --<span class="built_in">enable</span>-opcache --<span class="built_in">enable</span>-fpm --with-fpm-user=www --with-fpm-group=www --without-gdbm --with-pcre-regex --with-png-dir --<span class="built_in">enable</span>-fileinfo  --<span class="built_in">enable</span>-debug</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p> </p>
+<h3 id="三、编译参数"><a href="#三、编译参数" class="headerlink" title="三、编译参数"></a>三、编译参数</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./buildconf</span><br><span class="line">./configure --with-openssl --with-mysqli --with-pdo-mysql --with-gd --with-iconv --with-zlib --enable-zip --enable-inline-optimization --enable-xml --enable-bcmath --enable-shmop --enable-sysvsem --enable-mbregex --enable-mbstring --enable-ftp --enable-pcntl --enable-sockets --with-xmlrpc --enable-soap --with-gettext --enable-session --with-curl --with-jpeg-dir --with-freetype-dir --enable-opcache --enable-fpm --with-fpm-user=www --with-fpm-group=www --without-gdbm --with-pcre-regex --with-png-dir --enable-fileinfo  --enable-debug</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p> </p>
 <h3 id="四、常用插件安装"><a href="#四、常用插件安装" class="headerlink" title="四、常用插件安装"></a>四、常用插件安装</h3><h4 id="1、redis"><a href="#1、redis" class="headerlink" title="1、redis:"></a>1、redis:</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pecl install redis</span><br></pre></td></tr></table></figure>
+
 <h4 id="2、memcached"><a href="#2、memcached" class="headerlink" title="2、memcached:"></a>2、memcached:</h4><p>先安装 memcached:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget http://memcached.org/files/memcached-1.5.7.tar.gz</span><br><span class="line">tar -zxf memcached-1.5.7.tar.gz</span><br><span class="line"><span class="built_in">cd</span> memcached-1.5.7</span><br><span class="line">./configure </span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
 <p>在安装php-memcaced扩展：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://pecl.php.net/get/memcached-3.0.4.tgz</span><br><span class="line">tar -zxf memcached-3.0.4.tgz</span><br><span class="line"><span class="built_in">cd</span> memcached-3.0.4</span><br><span class="line">phpize</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
 <h4 id="3、swoole"><a href="#3、swoole" class="headerlink" title="3、swoole:"></a>3、swoole:</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pecl install swoole</span><br></pre></td></tr></table></figure>
-<h3 id="五、配置-php"><a href="#五、配置-php" class="headerlink" title="五、配置 php"></a>五、配置 php</h3><p>因为从源码安装的php没有自动放置好 <code>php.ini</code> 文件，所以，我们需要从源码文件夹中复制：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> php-src-7.2.4</span><br><span class="line">cp php.ini.production /usr/<span class="built_in">local</span>/lib/php.ini</span><br></pre></td></tr></table></figure>
-<p>然后我们就可以配置php.ini 加入以上扩展了，`vim /usr/local/lib/php.ini` 然后在文件尾加入：</p>
+<p> </p>
+<h3 id="五、配置-php"><a href="#五、配置-php" class="headerlink" title="五、配置 php"></a>五、配置 php</h3><p>因为从源码安装的php没有自动放置好 <code>php.ini</code> 文件，所以，我们需要从源码文件夹中复制：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> php-src-7.2.4</span><br><span class="line"><span class="built_in">cp</span> php.ini.production /usr/local/lib/php.ini</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以配置php.ini 加入以上扩展了，`vim &#x2F;usr&#x2F;local&#x2F;lib&#x2F;php.ini` 然后在文件尾加入：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extension=redis.so</span><br><span class="line">extension=swoole.so</span><br><span class="line">extension=memcached.so</span><br></pre></td></tr></table></figure>
+<p> </p>
 <h3 id="六、检查php"><a href="#六、检查php" class="headerlink" title="六、检查php"></a>六、检查php</h3><p>确认php版本</p>
 <pre><code>php -v
-</code></pre><p>确认读取的 php.ini 文件的位置：</p>
+</code></pre>
+<p>确认读取的 php.ini 文件的位置：</p>
 <pre><code>php -i | grep php.ini
-</code></pre><p>检查已经安装的插件</p>
+</code></pre>
+<p>检查已经安装的插件</p>
 <pre><code>php -m
 </code></pre>
+
     </div>
 
     
@@ -385,7 +398,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

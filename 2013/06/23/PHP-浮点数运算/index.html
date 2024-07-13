@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -213,11 +213,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>bcadd — 将两个高精度数字相加 bcsub — 将两个高精度数字相减 bccomp — 比较两个高精度数字，返回-1, 0, 1 bcdiv — 将两个高精度数字相除 bcmod — 求高精度数字余数 bcmul — 将两个高精度数字相乘 bcpow — 求高精度数字乘方 bcpowmod — 求高精度数字乘方求模，数论里非常常用 bcscale — 配置默认小数点位数，相当于就是Linux bc中的”scale=” bcsqrt — 求高精度数字平方根 例子：</p>
-<a id="more"></a>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">$a = <span class="string">'1.234'</span>;</span><br><span class="line">$b = <span class="string">'5'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> bcadd($a, $b);     <span class="comment">// 6</span></span><br><span class="line"><span class="keyword">echo</span> bcadd($a, $b, <span class="number">4</span>);  <span class="comment">// 6.2340</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>第三个参数说明：此可选参数用于设置结果中小数点后的小数位数。也可通过使用 <a href="http://php.net/manual/zh/function.bcscale.php" target="_blank" rel="noopener">bcscale()</a> 来设置全局默认的小数位数，用于所有函数。   比较说明：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> bccomp(<span class="string">'1'</span>, <span class="string">'2'</span>) . <span class="string">"\\n"</span>;   <span class="comment">// -1</span></span><br><span class="line"><span class="keyword">echo</span> bccomp(<span class="string">'1.00001'</span>, <span class="string">'1'</span>, <span class="number">3</span>); <span class="comment">// 0</span></span><br><span class="line"><span class="keyword">echo</span> bccomp(<span class="string">'1.00001'</span>, <span class="string">'1'</span>, <span class="number">5</span>); <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+        <p>bcadd — 将两个高精度数字相加 bcsub — 将两个高精度数字相减 bccomp — 比较两个高精度数字，返回-1, 0, 1 bcdiv — 将两个高精度数字相除 bcmod — 求高精度数字余数 bcmul — 将两个高精度数字相乘 bcpow — 求高精度数字乘方 bcpowmod — 求高精度数字乘方求模，数论里非常常用 bcscale — 配置默认小数点位数，相当于就是Linux bc中的”scale&#x3D;” bcsqrt — 求高精度数字平方根 例子：</p>
+<span id="more"></span>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&#x27;1.234&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span> = <span class="string">&#x27;5&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">bcadd</span>(<span class="variable">$a</span>, <span class="variable">$b</span>);     <span class="comment">// 6</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">bcadd</span>(<span class="variable">$a</span>, <span class="variable">$b</span>, <span class="number">4</span>);  <span class="comment">// 6.2340</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>第三个参数说明：此可选参数用于设置结果中小数点后的小数位数。也可通过使用 <a target="_blank" rel="noopener" href="http://php.net/manual/zh/function.bcscale.php">bcscale()</a> 来设置全局默认的小数位数，用于所有函数。   比较说明：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">bccomp</span>(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>) . <span class="string">&quot;\\n&quot;</span>;   <span class="comment">// -1</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">bccomp</span>(<span class="string">&#x27;1.00001&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="number">3</span>); <span class="comment">// 0</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">bccomp</span>(<span class="string">&#x27;1.00001&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="number">5</span>); <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>说明：如果两个数相等返回0, 左边的数比较右边的数大返回1, 否则返回-1.</p>
 
     </div>
@@ -365,7 +368,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

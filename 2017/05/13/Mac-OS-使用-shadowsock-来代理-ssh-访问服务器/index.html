@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 7.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -218,13 +218,16 @@
 <p>本文是说明如何使用 shadowsock 来代理 ssh 访问服务器，不是使用 ssh 来做代理哦，大家请看清楚</p>
 </blockquote>
 <p>当然，系统针对 Unix（其实只在 Mac 下使用过）</p>
-<a id="more"></a>
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><pre><code>ssh root@192.168.0.1 -o &quot;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&quot;
-</code></pre><h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><p><code>ssh root@192.168.0.1</code> 这部分就不用解释了吧？我们来看看 <code>-o &quot;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&quot;</code> <code>-o ProxyCommand</code> : ssh 命令选项，你可以理解成使用 “在 ssh 中使用代理” <code>nc</code>: nc命令(netcat) <code>127.0.0.1:1080</code>: 本地 shadowsock 的监听地址和监听端口，这是这条命令的唯一需要你自己配置的部分，可内网或者外网。</p>
+<span id="more"></span>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><pre><code> ssh root@192.168.0.1 -o &quot;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&quot;
+</code></pre>
+<h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><p><code>ssh root@192.168.0.1</code> 这部分就不用解释了吧？我们来看看 <code>-o &quot;ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p&quot;</code> <code>-o ProxyCommand</code> : ssh 命令选项，你可以理解成使用 “在 ssh 中使用代理” <code>nc</code>: nc命令(netcat) <code>127.0.0.1:1080</code>: 本地 shadowsock 的监听地址和监听端口，这是这条命令的唯一需要你自己配置的部分，可内网或者外网。</p>
 <h3 id="鉴别自己是否真的使用了代理来登陆服务器"><a href="#鉴别自己是否真的使用了代理来登陆服务器" class="headerlink" title="鉴别自己是否真的使用了代理来登陆服务器"></a>鉴别自己是否真的使用了代理来登陆服务器</h3><p>终端执行命令 <code>who</code> ， 会出现以下结果：</p>
 <pre><code>root@ubuntu:~# who
 root     pts/2        2017-05-13 18:13 (xxx.xxx.xxx.xxx)
-</code></pre><p>这个时候，就就要看一下 <code>(xxx.xxx.xxx.xxx)</code> 是不是代理的命令了。 Have fun!</p>
+</code></pre>
+<p>这个时候，就就要看一下 <code>(xxx.xxx.xxx.xxx)</code> 是不是代理的命令了。 Have fun!</p>
 
     </div>
 
@@ -372,7 +375,7 @@ root     pts/2        2017-05-13 18:13 (xxx.xxx.xxx.xxx)
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
