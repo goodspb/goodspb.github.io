@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"goodspb.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前提苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： https:&#x2F;&#x2F;developer.apple.com&#x2F;library&#x2F;mac&#x2F;documentation&#x2F;GameKit&#x2F;Reference&#x2F;GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器端验证 Apple Game Center GKLocalPlayer 签名（PHP描述）">
+<meta property="og:url" content="https://goodspb.com/2016/09/05/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E9%AA%8C%E8%AF%81-Apple-Game-Center-GKLocalPlayer-%E7%AD%BE%E5%90%8D%EF%BC%88PHP%E6%8F%8F%E8%BF%B0%EF%BC%89/index.html">
+<meta property="og:site_name" content="Malvin&#39;s Blog">
+<meta property="og:description" content="前提苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： https:&#x2F;&#x2F;developer.apple.com&#x2F;library&#x2F;mac&#x2F;documentation&#x2F;GameKit&#x2F;Reference&#x2F;GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://goodspb.com/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png">
+<meta property="article:published_time" content="2016-09-05T04:09:20.000Z">
+<meta property="article:modified_time" content="2022-11-19T06:07:10.744Z">
+<meta property="article:author" content="Malvin Lok (AKA goodspb)">
+<meta property="article:tag" content="Malvin goodspb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://goodspb.com/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png">
+
+<link rel="canonical" href="https://goodspb.com/2016/09/05/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E9%AA%8C%E8%AF%81-Apple-Game-Center-GKLocalPlayer-%E7%AD%BE%E5%90%8D%EF%BC%88PHP%E6%8F%8F%E8%BF%B0%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>服务器端验证 Apple Game Center GKLocalPlayer 签名（PHP描述） | Malvin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Malvin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">无志者千难万难，有志者千方百计</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://goodspb.com/2016/09/05/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E9%AA%8C%E8%AF%81-Apple-Game-Center-GKLocalPlayer-%E7%AD%BE%E5%90%8D%EF%BC%88PHP%E6%8F%8F%E8%BF%B0%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Malvin Lok (AKA goodspb)">
+      <meta itemprop="description" content="Malvin Lok 的 Blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Malvin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          服务器端验证 Apple Game Center GKLocalPlayer 签名（PHP描述）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-09-05 12:09:20" itemprop="dateCreated datePublished" datetime="2016-09-05T12:09:20+08:00">2016-09-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><p>苹果 Game Center 登录的时候，需要到自身的服务端中去验证用户的有效性。具体可以查看 Apple 的说明文档： <a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html#//apple_ref/occ/instm/GKLocalPlayer/generateIdentityVerificationSignatureWithCompletionHandler">https://developer.apple.com/library/mac/documentation/GameKit/Reference/GKLocalPlayer_Ref&#x2F;index.html#&#x2F;&#x2F;apple_ref&#x2F;occ&#x2F;instm&#x2F;GKLocalPlayer&#x2F;generateIdentityVerificationSignatureWithCompletionHandler</a> 重点在于整个验证的描述： <a href="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png"><img src="/images/2016/09/97C40134-873E-4A9E-9986-F4A66EF1E2C0.png" alt="97C40134-873E-4A9E-9986-F4A66EF1E2C0"></a> 由此可见，服务端需要接受来自客户端的参数有以下 <code>6</code> 个：</p>
+<ol>
+<li>publicKeyURL</li>
+<li>playerID</li>
+<li>bundleID</li>
+<li>timestamp</li>
+<li>signature</li>
+<li>salt</li>
+</ol>
+<span id="more"></span>
+
+<h4 id="参数预处理"><a href="#参数预处理" class="headerlink" title="参数预处理"></a>参数预处理</h4><p>其中，<code>timestamp</code> 需要注意，这不是字面意义上的 时间戳 ，实际上是 <code>Big-Endian UInt-64 format</code> 表示的时间值。需要再PHP中识别，我们需要作一下处理：</p>
+<pre><code>    function unpackTimestamp($timestamp)
+    &#123;
+        $highMap = 0xffffffff00000000;
+        $lowMap = 0x00000000ffffffff;
+        $higher = ($timestamp &amp; $highMap) &gt;&gt; 32;
+        $lower = $timestamp &amp; $lowMap;
+        return pack(&#39;NN&#39;, $higher, $lower);
+    &#125;
+</code></pre>
+<p>还有，<code>publicKeyURL</code> 是一个 <code>.cer</code> 结尾的签名文件，我们需要将佢做一定的格式编码，可以这样处理：</p>
+<pre><code>    function getPublicKey($url)
+    &#123;
+        $content = file_get_content($url); //建议使用 curl 来处理，这里为了演示简单直接使用 file_get_content 
+        return &#39;-----BEGIN CERTIFICATE-----&#39; . PHP_EOL .
+                chunk_split(base64_encode($content), 64, PHP_EOL) .
+                &#39;-----END CERTIFICATE-----&#39;. PHP_EOL;
+    &#125;
+</code></pre>
+<p>最后，<code>signature</code> 和 <code>salt</code> 均需进行 <code>base64_decode</code> 。</p>
+<h4 id="验证签名"><a href="#验证签名" class="headerlink" title="验证签名"></a>验证签名</h4><pre><code>function checkSignature($publicKeyURL, $playerID, $bundleID, $timestamp, $signature, $salt)
+&#123;
+        $publicKey = getPublicKey($publicKeyURL);
+                $timestamp = unpackTimestamp($timestamp);
+                $signature = base64_decode($signature);
+                $salt = base64_decode($salt);
+
+                $data = $playerID.$bundleID.$timestamp.$salt;
+
+                $result = openssl_verify($data, $signature, openssl_pkey_get_public($publicKey), OPENSSL_ALGO_SHA256);
+        openssl_free_key($publicKey);
+
+                if ( 1 === $result) &#123;
+                      return true;
+                &#125;
+                return false;
+&#125;
+</code></pre>
+<p>当 <code>checkSignature</code> 函数返回 <code>true</code> 时，表示签名验证通过。</p>
+<blockquote>
+<p>好了，大体的验证流程就是这样了。当验证通过的时候，就可以使用 <code>playerID</code> 来在自己的用户系统中生成唯一的用户ID了。 Have fun.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/09/01/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87-API-%E8%8E%B7%E5%8F%96-%E5%AE%9E%E6%97%B6%E7%9A%84%E8%B4%A7%E5%B8%81%E6%B1%87%E7%8E%87/" rel="prev" title="如何通过 API 获取 实时的货币汇率">
+      <i class="fa fa-chevron-left"></i> 如何通过 API 获取 实时的货币汇率
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/09/07/Python2--Python3-%E8%8E%B7%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%AD%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E2%80%9C%E4%B8%AD%E6%96%87%E2%80%9D/" rel="next" title="Python2 / Python3 获取字符中是否包含“中文”">
+      Python2 / Python3 获取字符中是否包含“中文” <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">参数预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E7%AD%BE%E5%90%8D"><span class="nav-number">3.</span> <span class="nav-text">验证签名</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Malvin Lok (AKA goodspb)"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Malvin Lok (AKA goodspb)</p>
+  <div class="site-description" itemprop="description">Malvin Lok 的 Blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/goodspb" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;goodspb" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:goodspb.luo@gmail.com" title="E-Mail → mailto:goodspb.luo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://medium.com/@malvin.lok" title="Medium → https:&#x2F;&#x2F;medium.com&#x2F;@malvin.lok" rel="noopener" target="_blank"><i class="fa fa-fw fa-medium"></i>Medium</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Malvin Lok (AKA goodspb)</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

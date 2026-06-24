@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"goodspb.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MySQL包含对触发器的支持。触发器是一种与表操作有关的数据库对象，当触发器所在表上出现指定事件时，将调用该对象，即表的操作事件触发表上的触发器的执行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL触发器">
+<meta property="og:url" content="https://goodspb.com/2014/12/25/MySQL%E8%A7%A6%E5%8F%91%E5%99%A8/index.html">
+<meta property="og:site_name" content="Malvin&#39;s Blog">
+<meta property="og:description" content="MySQL包含对触发器的支持。触发器是一种与表操作有关的数据库对象，当触发器所在表上出现指定事件时，将调用该对象，即表的操作事件触发表上的触发器的执行。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="http://common.cnblogs.com/images/copycode.gif">
+<meta property="article:published_time" content="2014-12-25T09:17:03.000Z">
+<meta property="article:modified_time" content="2022-11-19T06:07:10.737Z">
+<meta property="article:author" content="Malvin Lok (AKA goodspb)">
+<meta property="article:tag" content="InnoDB">
+<meta property="article:tag" content="MyISAM">
+<meta property="article:tag" content="Mysql">
+<meta property="article:tag" content="trigger">
+<meta property="article:tag" content="触发器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://common.cnblogs.com/images/copycode.gif">
+
+<link rel="canonical" href="https://goodspb.com/2014/12/25/MySQL%E8%A7%A6%E5%8F%91%E5%99%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL触发器 | Malvin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Malvin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">无志者千难万难，有志者千方百计</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://goodspb.com/2014/12/25/MySQL%E8%A7%A6%E5%8F%91%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Malvin Lok (AKA goodspb)">
+      <meta itemprop="description" content="Malvin Lok 的 Blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Malvin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL触发器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-12-25 17:17:03" itemprop="dateCreated datePublished" datetime="2014-12-25T17:17:03+08:00">2014-12-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>MySQL包含对触发器的支持。触发器是一种与表操作有关的数据库对象，当触发器所在表上出现指定事件时，将调用该对象，即表的操作事件触发表上的触发器的执行。</p>
+<span id="more"></span>
+
+<h3 id="创建触发器"><a href="#创建触发器" class="headerlink" title="创建触发器"></a>创建触发器</h3><p>在MySQL中，创建触发器语法如下：</p>
+<p>CREATE TRIGGER trigger_name<br>trigger_time<br>trigger_event ON tbl_name<br>FOR EACH ROW<br>trigger_stmt</p>
+<p>其中： trigger_name：标识触发器名称，用户自行指定； trigger_time：标识触发时机，取值为 BEFORE 或 AFTER； trigger_event：标识触发事件，取值为 INSERT、UPDATE 或 DELETE； tbl_name：标识建立触发器的表名，即在哪张表上建立触发器； trigger_stmt：触发器程序体，可以是一句SQL语句，或者用 BEGIN 和 END 包含的多条语句。 由此可见，可以建立6种触发器，即：BEFORE INSERT、BEFORE UPDATE、BEFORE DELETE、AFTER INSERT、AFTER UPDATE、AFTER DELETE。 另外有一个限制是不能同时在一个表上建立2个相同类型的触发器，因此在一个表上最多建立6个触发器。</p>
+<h3 id="trigger-event-详解"><a href="#trigger-event-详解" class="headerlink" title="trigger_event 详解"></a>trigger_event 详解</h3><p>MySQL 除了对 INSERT、UPDATE、DELETE 基本操作进行定义外，还定义了 LOAD DATA 和 REPLACE 语句，这两种语句也能引起上述6中类型的触发器的触发。 LOAD DATA 语句用于将一个文件装入到一个数据表中，相当与一系列的 INSERT 操作。 REPLACE 语句一般来说和 INSERT 语句很像，只是在表中有 primary key 或 unique 索引时，如果插入的数据和原来 primary key 或 unique 索引一致时，会先删除原来的数据，然后增加一条新数据，也就是说，一条 REPLACE 语句有时候等价于一条。 INSERT 语句，有时候等价于一条 DELETE 语句加上一条 INSERT 语句。 INSERT 型触发器：插入某一行时激活触发器，可能通过 INSERT、LOAD DATA、REPLACE 语句触发； UPDATE 型触发器：更改某一行时激活触发器，可能通过 UPDATE 语句触发； DELETE 型触发器：删除某一行时激活触发器，可能通过 DELETE、REPLACE 语句触发。</p>
+<h3 id="BEGIN-…-END-详解"><a href="#BEGIN-…-END-详解" class="headerlink" title="BEGIN … END 详解"></a>BEGIN … END 详解</h3><p>在MySQL中，BEGIN … END 语句的语法为：</p>
+<p>BEGIN<br>[statement_list]<br>END</p>
+<p>其中，statement_list 代表一个或多个语句的列表，列表内的每条语句都必须用分号（;）来结尾。 而在MySQL中，分号是语句结束的标识符，遇到分号表示该段语句已经结束，MySQL可以开始执行了。因此，解释器遇到statement_list 中的分号后就开始执行，然后会报出错误，因为没有找到和 BEGIN 匹配的 END。 这时就会用到 DELIMITER 命令（DELIMITER 是定界符，分隔符的意思），它是一条命令，不需要语句结束标识，语法为： DELIMITER new_delemiter new_delemiter 可以设为1个或多个长度的符号，默认的是分号（;），我们可以把它修改为其他符号，如$： DELIMITER $ 在这之后的语句，以分号结束，解释器不会有什么反应，只有遇到了$，才认为是语句结束。注意，使用完之后，我们还应该记得把它给修改回来。</p>
+<h3 id="一个完整的创建触发器示例"><a href="#一个完整的创建触发器示例" class="headerlink" title="一个完整的创建触发器示例"></a>一个完整的创建触发器示例</h3><p>假设系统中有两个表： 班级表 class(班级号 classID, 班内学生数 stuCount) 学生表 student(学号 stuID, 所属班级号 classID) 要创建触发器来使班级表中的班内学生数随着学生的添加自动更新，代码如下：</p>
+<p><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码"></p>
+<p>DELIMITER $<br>create trigger tri_stuInsert after insert<br>on student for each row<br>begin<br>declare c int;<br>set c &#x3D; (select stuCount from class where classID&#x3D;new.classID);<br>update class set stuCount &#x3D; c + 1 where classID &#x3D; new.classID;<br>end$<br>DELIMITER ;</p>
+<p><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码"></p>
+<h3 id="变量详解"><a href="#变量详解" class="headerlink" title="变量详解"></a>变量详解</h3><p>MySQL 中使用 DECLARE 来定义一局部变量，该变量只能在 BEGIN … END 复合语句中使用，并且应该定义在复合语句的开头， 即其它语句之前，语法如下：</p>
+<p>DECLARE var_name[,…] type [DEFAULT value]</p>
+<p>其中： var_name 为变量名称，同 SQL 语句一样，变量名不区分大小写；type 为 MySQL 支持的任何数据类型；可以同时定义多个同类型的变量，用逗号隔开；变量初始值为 NULL，如果需要，可以使用 DEFAULT 子句提供默认值，值可以被指定为一个表达式。 对变量赋值采用 SET 语句，语法为：</p>
+<p>SET var_name &#x3D; expr [,var_name &#x3D; expr] …</p>
+<h3 id="NEW-与-OLD-详解"><a href="#NEW-与-OLD-详解" class="headerlink" title="NEW 与 OLD 详解"></a>NEW 与 OLD 详解</h3><p>上述示例中使用了NEW关键字，和 MS SQL Server 中的 INSERTED 和 DELETED 类似，MySQL 中定义了 NEW 和 OLD，用来表示 触发器的所在表中，触发了触发器的那一行数据。 具体地： 在 INSERT 型触发器中，NEW 用来表示将要（BEFORE）或已经（AFTER）插入的新数据； 在 UPDATE 型触发器中，OLD 用来表示将要或已经被修改的原数据，NEW 用来表示将要或已经修改为的新数据； 在 DELETE 型触发器中，OLD 用来表示将要或已经被删除的原数据； 使用方法： NEW.columnName （columnName 为相应数据表某一列名） 另外，OLD 是只读的，而 NEW 则可以在触发器中使用 SET 赋值，这样不会再次触发触发器，造成循环调用（如每插入一个学生前，都在其学号前加“2013”）。</p>
+<h3 id="查看触发器"><a href="#查看触发器" class="headerlink" title="查看触发器"></a>查看触发器</h3><p>和查看数据库（show databases;）查看表格（show tables;）一样，查看触发器的语法如下：</p>
+<p>SHOW TRIGGERS [FROM schema_name];</p>
+<p>其中，schema_name 即 Schema 的名称，在 MySQL 中 Schema 和 Database 是一样的，也就是说，可以指定数据库名，这样就 不必先“USE database_name;”了。</p>
+<h3 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h3><p>和删除数据库、删除表格一样，删除触发器的语法如下：</p>
+<p>DROP TRIGGER [IF EXISTS] [schema_name.]trigger_name</p>
+<h3 id="触发器的执行顺序"><a href="#触发器的执行顺序" class="headerlink" title="触发器的执行顺序"></a>触发器的执行顺序</h3><p>我们建立的数据库一般都是 InnoDB 数据库，其上建立的表是事务性表，也就是事务安全的。这时，若SQL语句或触发器执行失败，MySQL 会回滚事务，有： ①如果 BEFORE 触发器执行失败，SQL 无法正确执行。 ②SQL 执行失败时，AFTER 型触发器不会触发。 ③AFTER 类型的触发器执行失败，SQL 会回滚。   摘自：<a target="_blank" rel="noopener" href="http://blog.163.com/csbqf@126/blog/static/6122437120131875924806/">http:&#x2F;&#x2F;blog.163.com&#x2F;csbqf@126&#x2F;blog&#x2F;static&#x2F;6122437120131875924806&#x2F;</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/InnoDB/" rel="tag"><i class="fa fa-tag"></i> InnoDB</a>
+              <a href="/tags/MyISAM/" rel="tag"><i class="fa fa-tag"></i> MyISAM</a>
+              <a href="/tags/Mysql/" rel="tag"><i class="fa fa-tag"></i> Mysql</a>
+              <a href="/tags/trigger/" rel="tag"><i class="fa fa-tag"></i> trigger</a>
+              <a href="/tags/%E8%A7%A6%E5%8F%91%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 触发器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/12/03/Redis-%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-MQ/" rel="prev" title="Redis 实现消息队列 MQ">
+      <i class="fa fa-chevron-left"></i> Redis 实现消息队列 MQ
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/02/24/Mac-%E4%B8%8B%E8%AE%A9%E7%BB%88%E7%AB%AF-ls-%E5%91%BD%E4%BB%A4%E5%AF%B9%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9D%80%E8%89%B2/" rel="next" title="Mac 下让终端 ls 命令对不同文件类型着色">
+      Mac 下让终端 ls 命令对不同文件类型着色 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">创建触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trigger-event-%E8%AF%A6%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">trigger_event 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BEGIN-%E2%80%A6-END-%E8%AF%A6%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">BEGIN … END 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E5%88%9B%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">一个完整的创建触发器示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E8%AF%A6%E8%A7%A3"><span class="nav-number">5.</span> <span class="nav-text">变量详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEW-%E4%B8%8E-OLD-%E8%AF%A6%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">NEW 与 OLD 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">7.</span> <span class="nav-text">查看触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">删除触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">9.</span> <span class="nav-text">触发器的执行顺序</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Malvin Lok (AKA goodspb)"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Malvin Lok (AKA goodspb)</p>
+  <div class="site-description" itemprop="description">Malvin Lok 的 Blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/goodspb" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;goodspb" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:goodspb.luo@gmail.com" title="E-Mail → mailto:goodspb.luo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://medium.com/@malvin.lok" title="Medium → https:&#x2F;&#x2F;medium.com&#x2F;@malvin.lok" rel="noopener" target="_blank"><i class="fa fa-fw fa-medium"></i>Medium</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Malvin Lok (AKA goodspb)</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
